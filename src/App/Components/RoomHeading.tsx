@@ -1,4 +1,5 @@
 import { Info, Share } from "react-feather";
+import { PrimaryButton } from "./Buttons";
 
 interface RoomHeadingProps {
     name: string;
@@ -18,7 +19,7 @@ export const RoomHeading: React.FC<RoomHeadingProps> = ({
         <ul className="flex space-x-2">
             <button className="focus:outline-none"><Share /></button>
             <button className="focus:outline-none"><Info /></button>
-            <button className="bg-indigo-900 p-2 rounded-md transition duration-150 hover:bg-indigo-500 text-sm focus:outline-none">Login / Sign Up</button>
+            <PrimaryButton type="button" sm title="Login / Sign Up" />
         </ul>
     </div>
 );

@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { PrimaryButton } from "../Components/Buttons";
 import { StandardLayout } from "../Components/Layout";
 import { PageHeading } from "../Components/PageHeading";
 import { RoomCard } from "../Components/RoomCard";
@@ -27,9 +28,7 @@ export const Home = () => {
                         />
                     </div>
                     <div className="w-1/4 sm:w-1/2 md:w-1/4 lg:w-full lg:max-w-sm">
-                        <button className="block w-full bg-indigo-900 p-3 rounded-md transition duration-150 hover:bg-indigo-500 focus:outline-none">
-                            Create Room
-                        </button>
+                        <PrimaryButton type="button" title="Create Room" />
                     </div>
                 </div>
             </RoomSection>
