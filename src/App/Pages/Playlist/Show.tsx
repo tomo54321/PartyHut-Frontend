@@ -181,15 +181,19 @@ const PlaylistSongs: React.FC<{ songs: APISong[], currentSongId: React.MutableRe
         return (
             <SongRow
                 key={`${song.id}`}
-                platformId={song.platformId}
                 title={song.title}
                 postedBy={song.postedBy}
                 thumbnailUrl={song.thumbnailUrl}
                 platform={song.platform}
-                onDeleteClicked={() => { 
-                    currentSongId.current = song.id;
-                    setShowConfirmSongDelete(true);
-                }}
+                contextItems={[
+                    {
+                        title: "Remove Song",
+                        onClick() { 
+                            currentSongId.current = song.id;
+                            setShowConfirmSongDelete(true);
+                        }
+                    }
+                ]}
             />
         )
     })

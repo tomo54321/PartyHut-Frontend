@@ -160,6 +160,42 @@ export const deletePlaylist = (
 
 
 
+export const addSong = (
+    id: string,
+    platform: "YouTube" | "SoundCloud",
+    playlistId: string,
+    cancel_token: CancelTokenSource
+): Promise<Boolean> => {
+    return new Promise(async (resolve, reject) => {
+
+        try{
+            await API.put('/playlist/' + playlistId + "/song/", {
+                songId: id,
+                platform
+            }, {
+                cancelToken: cancel_token.token
+            });
+
+            resolve(true);
+
+        } catch (e) {
+            if(axios.isCancel(e)){ return; }
+
+            if(e.response){
+                reject(e.response.data as APIErrorResponse);
+            } else {
+                reject({
+                    errors: [{
+                        param: "internet",
+                        msg: "Failed to connect, please try again."
+                    }]
+                } as APIErrorResponse)
+            }
+        }
+
+    });
+}
+
 export const deleteSong = (
     id: string,
     playlistId: string,

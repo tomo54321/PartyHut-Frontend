@@ -9,11 +9,13 @@ interface Option {
 interface DropdownProps {
     onChange: Function;
     value: string;
+    disabled?: boolean;
     options: Option[];
 }
 export const SelectDropdown: React.FC<DropdownProps> = ({
     onChange,
     value,
+    disabled,
     options
 }) => {
 
@@ -49,14 +51,14 @@ export const SelectDropdown: React.FC<DropdownProps> = ({
         <div 
         ref={ref => dropdownRef.current = ref}
         className="relative">
-            <SecondaryButton type="button" onClick={() => setIsOpen(true)}>
+            <SecondaryButton type="button" disabled={disabled} onClick={() => setIsOpen(true)}>
                 <div className="flex items-center justify-between">
                     <span className="font-semibold">{options.find(opt => opt.value === value)?.title || "Invalid Value"}</span>
                     <Code size={16} className="transform rotate-90"/>
                 </div>
             </SecondaryButton>
             {
-                isOpen ?
+                isOpen && !disabled ?
                 <ul className="absolute rounded-md overflow-hidden w-full mt-2 bg-gray-900">
                     {opts}
                 </ul>
@@ -66,3 +68,7 @@ export const SelectDropdown: React.FC<DropdownProps> = ({
     )
 
 };
+
+SelectDropdown.defaultProps = {
+    disabled: false
+}

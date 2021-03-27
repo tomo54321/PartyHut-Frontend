@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { MoreVertical } from "react-feather";
 
-interface MenuItem {
+export interface ContextMenuItem {
     title: string;
-    onClick: Function;
+    disabled?: boolean;
+    onClick?: Function;
 }
 
 interface ContextMenuProps {
-    items: MenuItem[];
+    items: ContextMenuItem[];
 }
 export const ContextMenu: React.FC<ContextMenuProps> = ({
     items
@@ -43,7 +44,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
     )
 };
 
-const Menu: React.FC<{ menuItems: MenuItem[] }> = ({
+const Menu: React.FC<{ menuItems: ContextMenuItem[] }> = ({
     menuItems
 }) => {
 
@@ -51,8 +52,12 @@ const Menu: React.FC<{ menuItems: MenuItem[] }> = ({
         <li key={"menu-item-" + index + Math.round(Math.random() * 9999)}>
             <button
             type="button" 
-            className="block w-full text-left p-3 text-sm transition duration-150 hover:bg-gray-700 focus:outline-none"
-            onClick={()=> item.onClick()}>{item.title}</button>
+            disabled={item.disabled || false}
+            className={`block w-full text-left p-3 text-sm transition duration-150 ${item.disabled ? "text-gray-400" : "hover:bg-gray-700"} focus:outline-none`}
+            onClick={() => {
+                if(item.disabled || item.onClick === undefined){ return; }
+                item.onClick();
+            }}>{item.title}</button>
         </li>
     ));
 

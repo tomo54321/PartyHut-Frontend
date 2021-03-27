@@ -1,44 +1,26 @@
-import { ContextMenu } from "../ContextMenu";
-
+import { ContextMenu, ContextMenuItem } from "../ContextMenu";
+import defaultArtwork from '../../Assets/default-cover.jpg';
 interface SongRowProps {
-    platformId: string;
     title: string;
     postedBy: string;
     platform: "YouTube" | "SoundCloud";
     thumbnailUrl: string;
-    onDeleteClicked?: Function;
+    contextItems?: ContextMenuItem[]
 }
 export const SongRow: React.FC<SongRowProps> = ({
-    platformId,
     title,
     postedBy,
     platform,
+    contextItems,
     thumbnailUrl,
-    onDeleteClicked
 }) => {
-
-    const contextItems = [
-        {
-            title: "Remove Song",
-            onClick() { if (onDeleteClicked) onDeleteClicked() }
-        }
-    ];
-
-    if(platform  === "YouTube"){
-        contextItems.push({
-            title: "View on YouTube",
-            onClick() {
-                window.open("https://youtube.com/watch?v=" + platformId, "_blank");
-            }
-        })
-    }
-
+    console.log(thumbnailUrl);
     return (
         <div
             className="grid grid-cols-4 items-center p-3 hover:bg-gray-700 border-b border-gray-700 transition duration-150"
         >
             <img
-                src={thumbnailUrl}
+                src={thumbnailUrl || defaultArtwork}
                 alt={title}
                 className="w-20 h-20 object-contain object-center"
             />
@@ -48,13 +30,14 @@ export const SongRow: React.FC<SongRowProps> = ({
             </div>
             <span>{platform}</span>
             <div className="text-right space-x-5 md:space-x-2">
-                <ContextMenu
-                    items={contextItems}
-                />
+                {
+                    contextItems ? 
+                    <ContextMenu
+                        items={contextItems}
+                    />
+                    : null
+                }
             </div>
         </div>
     )
 };
-SongRow.defaultProps = {
-    onDeleteClicked() { }
-}
