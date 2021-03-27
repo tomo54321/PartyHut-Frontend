@@ -16,8 +16,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
 
     const menuEl = useRef(null as HTMLDivElement | null);
     const documentClicked = useCallback(e => {
-
-        if(menuEl.current!.contains(e.target)){
+        if(menuEl.current === null || menuEl.current!.contains(e.target)){
             return;
         }
         setIsOpen(false);

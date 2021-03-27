@@ -3,7 +3,7 @@ import { PrimaryButton } from "../Components/Buttons";
 import { StandardLayout } from "../Components/Layout";
 import { PageHeading } from "../Components/PageHeading";
 import { RoomCard } from "../Components/RoomCard";
-import { RoomSearch } from "../Components/RoomSearch";
+import { SearchBar } from "../Components/SearchBar";
 import { RoomSection } from "../Components/RoomSection";
 
 export const Home = () => {
@@ -21,8 +21,9 @@ export const Home = () => {
             <RoomSection title="Find Rooms" noGrid>
                 <div className="flex space-x-2">
                     <div className="w-1/4 sm:w-1/2 md:w-3/4 lg:w-full lg:flex-grow">
-                        <RoomSearch 
+                        <SearchBar 
                             value={query}
+                            placeholder="Search rooms by name or user"
                             onQueryChange={(text: string) => setQuery(text)}
                             onSubmit={onSearchSubmit}
                         />

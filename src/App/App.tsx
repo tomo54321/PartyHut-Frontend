@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { AppContainer } from './Components/AppContainer';
 import { NavBar } from './Components/NavBar';
 import { Home } from './Pages/Home';
+import { Music } from './Pages/Music';
 import { AllPlaylists } from './Pages/Playlist/All';
 import { ShowPlaylist } from  './Pages/Playlist/Show';
 import { AuthPopup } from './Pages/Popups/Auth/Popup';
@@ -19,6 +20,8 @@ const App: React.FC<{}> = () => {
 						<Route path="/" exact component={Home} />
 						<Route path="/room/:roomId" exact component={Room} />
 
+						<Route path="/music" exact component={Music} />
+						
 						<Route path="/playlists" exact component={AllPlaylists} />
 						<Route path="/playlist/:playlistId" exact component={ShowPlaylist} />
 					</Switch>

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { PrimaryButton } from "../../Components/Buttons";
 import { StandardLayout } from "../../Components/Layout";
@@ -10,13 +11,17 @@ import { DeleteModal } from "../../Components/Playlist/DeleteModal";
 import { PlaylistRow } from "../../Components/Playlist/PlaylistRow";
 import { APIErrorResponse, APIPlaylistListResponse } from "../../Modules/API/d.types";
 import { fetchAllPlaylists } from "../../Modules/API/Playlists";
+import { ApplicationState } from "../../Redux/Store";
 
 export const AllPlaylists = () => {
 
-    const [isLoading, setIsLoading] = useState(true);
+    const cachedPlaylists = useSelector((state: ApplicationState) => state.user.playlists);
+
+    const [isLoading, setIsLoading] = useState(cachedPlaylists ? false : true);
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [playlists, setPlaylists] = useState([] as APIPlaylistListResponse[]);
+    const [playlists, setPlaylists] = useState((cachedPlaylists || []) as APIPlaylistListResponse[]);
+
 
     const playlistRemoveId = useRef("0");
 
@@ -40,6 +45,7 @@ export const AllPlaylists = () => {
 
     useEffect(() => {
         const token = axios.CancelToken.source();
+
         fetchAllPlaylists(token)
         .then(playlists => {
             setPlaylists(playlists);

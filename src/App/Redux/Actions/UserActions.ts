@@ -1,10 +1,13 @@
-import { APIUserResponse } from "../../Modules/API/d.types";
+import { APIPlaylistListResponse, APIUserResponse } from "../../Modules/API/d.types";
 
 export const USER_LOGGEDIN = "user:onLoggedIn";
-export const userLoggedIn = (data: APIUserResponse) => {
+export const userLoggedIn = (data: APIUserResponse, playlists?: APIPlaylistListResponse[]) => {
     return {
         type: USER_LOGGEDIN,
-        payload: data
+        payload: {
+            user: data,
+            playlists
+        }
     }
 }
 

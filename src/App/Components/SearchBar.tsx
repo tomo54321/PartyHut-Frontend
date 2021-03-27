@@ -1,13 +1,15 @@
 import { Search } from "react-feather";
 
-interface RoomSearchProps {
+interface SearchBarProps {
     onQueryChange: Function;
     value: string;
+    placeholder?: string;
     onSubmit: Function;
 }
-export const RoomSearch: React.FC<RoomSearchProps> = ({
+export const SearchBar: React.FC<SearchBarProps> = ({
     onQueryChange,
     value,
+    placeholder,
     onSubmit
 }) => (
 
@@ -25,7 +27,7 @@ export const RoomSearch: React.FC<RoomSearchProps> = ({
                 value={value}
                 onChange={e => onQueryChange(e.target.value)}
                 className="block w-full bg-transparent p-3 focus:outline-none"
-                placeholder="Search rooms by name or user"
+                placeholder={placeholder}
             />
             <button className="px-3">
                 <Search />

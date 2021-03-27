@@ -1,5 +1,5 @@
 import { NavLink, NavLinkProps } from "react-router-dom";
-import { Home, Icon, Music, User, Menu, X } from 'react-feather';
+import { Home, Icon, Music, User, Menu, X, List } from 'react-feather';
 import { useCallback, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showAuthForm } from "../Redux/Actions/AuthFormActions";
@@ -31,9 +31,14 @@ export const NavBar = () => {
                     LinkIcon={(props) => <Home {...props} />}
                 />
                 <NavBarLink
+                    to="/music"
+                    title="Music"
+                    LinkIcon={(props) => <Music {...props} />}
+                />
+                <NavBarLink
                     to="/playlists"
                     title="Playlists"
-                    LinkIcon={(props) => <Music {...props} />}
+                    LinkIcon={(props) => <List {...props} />}
                 />
                 <UserNavBarLink />
             </ul>

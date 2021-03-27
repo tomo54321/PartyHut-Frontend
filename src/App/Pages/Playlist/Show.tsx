@@ -1,16 +1,18 @@
 import axios from "axios";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useHistory, useRouteMatch } from "react-router";
 import { StandardLayout } from "../../Components/Layout";
 import { LoadingIcon } from "../../Components/LoadingIcon";
 import { PageHeading } from "../../Components/PageHeading";
-import { APIErrorResponse, APIPlaylistResponse } from "../../Modules/API/d.types";
+import { APIErrorResponse, APIPlaylistResponse, APISong } from "../../Modules/API/d.types";
 import { fetchSinglePlaylist } from "../../Modules/API/Playlists";
 import { SongRow } from '../../Components/Song/SongRow';
 import { DeleteSongModal } from "../../Components/Song/DeleteSongModal";
 import { ContextMenu } from "../../Components/ContextMenu";
 import { EditPlaylistModal } from "../../Components/Playlist/EditPlaylistModal";
 import { DeleteModal } from "../../Components/Playlist/DeleteModal";
+import { SearchBar } from "../../Components/SearchBar";
+import { DownloadFile } from "../../Utils/DownloadFile";
 
 export const ShowPlaylist = () => {
 
@@ -48,6 +50,24 @@ export const ShowPlaylist = () => {
         setShowPlaylistEditModal(false);
     }, [setPlaylist, playlist]);
 
+    const onPlaylistExport = useCallback(() => {
+        let playlistExport = {
+            name: playlist.title,
+            createdBy: playlist.user.username,
+            totalSongs: playlist.songs.length,
+            songs: playlist.songs.map((song) => ({
+                title: song.title,
+                artist: song.postedBy,
+                artwork: song.thumbnailUrl,
+                platform: song.platform,
+                platformId: song.platformId
+            }))
+        };
+        let exportString = JSON.stringify(playlistExport);
+        DownloadFile(exportString, `partyhouse-export-${Date.now()}.json`);
+        
+    }, [playlist]);
+
     useEffect(() => {
         const token = axios.CancelToken.source();
         setIsLoading(true);
@@ -79,20 +99,6 @@ export const ShowPlaylist = () => {
         )
     }
 
-    const songs = playlist.songs.map((song) => (
-        <SongRow
-            key={`${song.id}`}
-            title={song.title}
-            postedBy={song.postedBy}
-            thumbnailUrl={song.thumbnailUrl}
-            platform={song.platform}
-            onDeleteClicked={() => { 
-                songId.current = song.id;
-                setShowConfirmSongDelete(true);
-            }}
-        />
-    ))
-
     return (
         <StandardLayout>
             <div className="flex justify-between">
@@ -102,6 +108,10 @@ export const ShowPlaylist = () => {
                 </div>
                 <div>
                     <ContextMenu items={[
+                        {
+                            title: "Export Playlist",
+                            onClick: onPlaylistExport
+                        },
                         {
                             title: "Edit Playlist",
                             onClick() { setShowPlaylistEditModal(true); }
@@ -115,9 +125,11 @@ export const ShowPlaylist = () => {
             </div>
 
             {/* Songs */}
-            <div>
-                {songs}
-            </div>
+            <PlaylistSongs 
+                songs={playlist.songs}
+                currentSongId={songId}
+                setShowConfirmSongDelete={setShowConfirmSongDelete}
+            />
 
 
             {/* Modals */}
@@ -155,3 +167,42 @@ export const ShowPlaylist = () => {
 
 };
 
+const PlaylistSongs: React.FC<{ songs: APISong[], currentSongId: React.MutableRefObject<string>, setShowConfirmSongDelete: Function }> = ({
+    songs,
+    currentSongId,
+    setShowConfirmSongDelete,
+}) => {
+
+    const [query, setQuery] = useState("");
+    const songList = songs.map((song) => {
+        if(query !== "" && !song.title.includes(query)){
+            return null;
+        }
+        return (
+            <SongRow
+                key={`${song.id}`}
+                platformId={song.platformId}
+                title={song.title}
+                postedBy={song.postedBy}
+                thumbnailUrl={song.thumbnailUrl}
+                platform={song.platform}
+                onDeleteClicked={() => { 
+                    currentSongId.current = song.id;
+                    setShowConfirmSongDelete(true);
+                }}
+            />
+        )
+    })
+
+    return (
+        <div>
+            <SearchBar 
+                value={query}
+                onQueryChange={(text: string) => setQuery(text)}
+                placeholder="Filter Songs"
+                onSubmit={() => {}}
+            />
+            {songList}
+        </div>
+    )
+}

@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react"
 import { useDispatch } from "react-redux";
+import { fetchAllPlaylists } from "../Modules/API/Playlists";
 import { API } from "../Modules/Axios";
 import { userLoggedIn } from "../Redux/Actions/UserActions";
 import { LoadingIcon } from "./LoadingIcon";
@@ -13,9 +15,16 @@ export const AppContainer: React.FC<{ children: any}> = ({ children }) => {
     // Load in the app settings from the server (mainly if the user is logged in!)
 	useEffect(() => {
 		API.get("/app")
-		.then(({ data }) => {
+		.then(async ({ data }) => {
 			if(data.user){
-				dispatch(userLoggedIn(data.user));
+
+                try{
+                    const playlists = await fetchAllPlaylists(axios.CancelToken.source());
+                    dispatch(userLoggedIn(data.user, playlists));
+                } catch (e) {
+                    dispatch(userLoggedIn(data.user));
+                }
+
 			}
             setLoading(false);
 		})

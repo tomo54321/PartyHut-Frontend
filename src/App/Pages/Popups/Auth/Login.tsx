@@ -6,6 +6,7 @@ import { FormGroup } from "../../../Components/FormGroup";
 import { LoadingIcon } from "../../../Components/LoadingIcon";
 import { onLogin } from "../../../Modules/API/Authentcation";
 import { APIErrorResponse, APIUserResponse } from "../../../Modules/API/d.types";
+import { fetchAllPlaylists } from "../../../Modules/API/Playlists";
 import { userLoggedIn } from "../../../Redux/Actions/UserActions";
 import { AUTH_POPUP_PAGES } from './Popup';
 
@@ -26,7 +27,8 @@ export const Login: React.FC<{changePage: Function}> = ({
         setIsLoading(true);
         try{
             const user = await onLogin(email, password, cancelToken.current);
-            dispatch(userLoggedIn(user as APIUserResponse));
+            const playlists = await fetchAllPlaylists(cancelToken.current);
+            dispatch(userLoggedIn(user as APIUserResponse, playlists));
 
         } catch (e) {
             setErrors(e as APIErrorResponse);
