@@ -73,3 +73,30 @@ export const SecondaryButton: React.FC<ButtonProps> = ({
 
 };
 SecondaryButton.defaultProps = defaultButtonProps;
+
+export const DangerButton: React.FC<ButtonProps> = ({
+    type,
+    href,
+    sm,
+    disabled,
+    title,
+    children,
+    onClick
+}) => {
+
+    const classes = `${defaultButtonClasses} bg-red-800 hover:bg-red-600 ${sm ? "p-2 text-sm" : "p-3"}`;
+
+    if(type === "link"){
+        return <Link to={href!} className={classes}>{title}</Link>
+    } else {
+        return (
+            <button 
+            type={type}
+            disabled={disabled}
+            onClick={onClick} 
+            className={classes}>{children || title}</button>
+        )
+    }
+
+};
+DangerButton.defaultProps = defaultButtonProps;

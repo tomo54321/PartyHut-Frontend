@@ -2,10 +2,12 @@ import { Info, Share } from "react-feather";
 import { PrimaryButton } from "./Buttons";
 
 interface RoomHeadingProps {
+    loggedIn: boolean;
     name: string;
     username: string;
 };
 export const RoomHeading: React.FC<RoomHeadingProps> = ({
+    loggedIn,
     name,
     username
 }) => (
@@ -19,7 +21,10 @@ export const RoomHeading: React.FC<RoomHeadingProps> = ({
         <ul className="flex space-x-2">
             <button className="focus:outline-none"><Share /></button>
             <button className="focus:outline-none"><Info /></button>
-            <PrimaryButton type="button" sm title="Login / Sign Up" />
+            {
+                loggedIn ? null :
+                <PrimaryButton type="button" sm title="Login / Sign Up" />
+            }
         </ul>
     </div>
 );

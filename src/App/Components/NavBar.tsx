@@ -1,33 +1,26 @@
 import { NavLink, NavLinkProps } from "react-router-dom";
 import { Home, Icon, Music, User, Menu, X } from 'react-feather';
 import { useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
-import { SHOW_AUTH_FORM } from "../Redux/Actions/AuthFormActions";
+import { useDispatch, useSelector } from "react-redux";
+import { showAuthForm } from "../Redux/Actions/AuthFormActions";
 
 export const NavBar = () => {
     const [navbarOpen, setNavOpen] = useState(false);
-
-    const dispatch = useDispatch();
-
-    const onOpenSignUp = useCallback(() => {
-        dispatch({
-            type: SHOW_AUTH_FORM
-        })
-    }, [dispatch]);
 
     return (
         <aside className="flex justify-between flex-wrap sm:block sm:w-40 md:w-60 bg-gray-900 p-5">
             <h1 className="sm:text-lg md:text-2xl sm:mb-5 md:mb-10 font-semibold text-indigo-200">PartyBus</h1>
 
             <button
-            onClick={e => {
-                setNavOpen(open => !open)
-            }}
-            className="block sm:hidden focus:outline-none">
+                onClick={e => {
+                    setNavOpen(open => !open)
+                }}
+                className="block sm:hidden focus:outline-none"
+            >
                 {
                     navbarOpen ?
-                    <X /> :
-                    <Menu />
+                        <X /> :
+                        <Menu />
                 }
             </button>
 
@@ -42,20 +35,44 @@ export const NavBar = () => {
                     title="Playlists"
                     LinkIcon={(props) => <Music {...props} />}
                 />
-                <NavBarLink
-                    to="/login"
-                    title="Login / Sign Up"
-                    onClick={e => {
-                        onOpenSignUp();
-                        e.preventDefault();
-                    }}
-                    className="bg-indigo-700"
-                    LinkIcon={(props) => <User {...props} />}
-                />
+                <UserNavBarLink />
             </ul>
         </aside>
     )
 };
+
+
+const UserNavBarLink = () => {
+    const userStatus = useSelector(state => (state as any).user);
+    const dispatch = useDispatch();
+
+    const onOpenSignUp = useCallback(() => {
+        dispatch(showAuthForm())
+    }, [dispatch]);
+
+    if (!userStatus.logged_in) {
+        return (
+            <NavBarLink
+                to="/login"
+                title="Login / Sign Up"
+                onClick={e => {
+                    onOpenSignUp();
+                    e.preventDefault();
+                }}
+                className="bg-indigo-700"
+                LinkIcon={(props) => <User {...props} />}
+            />
+        )
+    }
+    return (
+        <NavBarLink
+            to="/profile"
+            title={userStatus.username}
+            LinkIcon={props => <User {...props} />}
+        />
+    )
+};
+
 
 interface NavBarLinkProps extends NavLinkProps {
     title: string;

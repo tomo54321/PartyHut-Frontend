@@ -6,8 +6,14 @@ interface Message {
     username: string;
     message: string;
 }
-
-export const ChatBox = () => {
+interface ChatBoxProps {
+    loggedIn: boolean;
+    username: string;
+}
+export const ChatBox: React.FC<ChatBoxProps> = ({
+    loggedIn,
+    username,
+}) => {
 
     const [chats, setChats] = useState([] as Message[]);
     const [message, setMessage] = useState("");
@@ -16,12 +22,12 @@ export const ChatBox = () => {
         const messages = [...chats];
         messages.push({
             id: Date.now(),
-            username: "tomo54321",
+            username: username,
             message: message
         } as Message);
         setChats(messages);
         setMessage("");
-    }, [message, chats, setMessage, setChats]);
+    }, [username, message, chats, setMessage, setChats]);
 
     const allMessages = chats.map(msg => (
         <div key={msg.id} className="p-3">
@@ -39,29 +45,60 @@ export const ChatBox = () => {
                 {allMessages}
             </div>
 
-            <form
-                action=""
-                method="POST"
-                onSubmit={e => {
-                    onSendChatMessage();
-                    e.preventDefault();
-                }}
-                className="flex flex-shrink-0">
-                <input
-                    placeholder="Type your message here"
-                    className="bg-gray-900 p-3 text-sm flex-grow focus:outline-none"
-                    value={message}
-                    onChange={e => setMessage(e.target.value)}
-                />
-                <button
-                    type="submit"
-                    className="px-2"
-                >
-                    <Send size={18} className="opacity-75" />
-                </button>
-
-            </form>
+            <ChatBoxSend
+                loggedIn={loggedIn}
+                message={message}
+                setMessage={setMessage}
+                onSendChatMessage={onSendChatMessage}
+            />
         </div>
     )
 
 };
+
+interface ChatBoxSendProps {
+    loggedIn: boolean;
+    message: string;
+    setMessage: Function;
+    onSendChatMessage: Function;
+}
+const ChatBoxSend: React.FC<ChatBoxSendProps> = ({
+    loggedIn,
+    message,
+    setMessage,
+    onSendChatMessage
+}) => {
+
+    if(!loggedIn){
+        return (
+            <div className="flex flex-shrink-0">
+                <span className="block p-3 text-sm">Login to send chat messages</span>
+            </div>
+        )
+    }
+
+    return (
+        <form
+            action=""
+            method="POST"
+            onSubmit={e => {
+                onSendChatMessage();
+                e.preventDefault();
+            }}
+            className="flex flex-shrink-0">
+            <input
+                placeholder="Type your message here"
+                className="bg-gray-900 p-3 text-sm flex-grow focus:outline-none"
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+            />
+            <button
+                type="submit"
+                className="px-2"
+            >
+                <Send size={18} className="opacity-75" />
+            </button>
+
+        </form>
+    )
+}

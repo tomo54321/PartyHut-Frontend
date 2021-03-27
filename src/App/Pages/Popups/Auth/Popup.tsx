@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { X } from "react-feather";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../../../Components/Modal";
-import { CLOSE_AUTH_FORM } from "../../../Redux/Actions/AuthFormActions";
+import { closeAuthForm } from "../../../Redux/Actions/AuthFormActions";
 import { ApplicationState } from "../../../Redux/Store";
 import { Login } from "./Login";
 import { SignUp } from "./SignUp";
@@ -16,18 +16,17 @@ export const AUTH_POPUP_PAGES = {
 export const AuthPopup = () => {
 
     const showForm = useSelector((state: ApplicationState) => state.authForm.shown);
+    const isLoggedIn = useSelector((state: ApplicationState) => state.user.logged_in);
     const dispatch = useDispatch();
 
     const [currentPage, setCurrentPage] = useState(AUTH_POPUP_PAGES.LOGIN);
 
 
     const onCloseForm = useCallback(() => {
-        dispatch({
-            type: CLOSE_AUTH_FORM
-        })
+        dispatch(closeAuthForm())
     }, [dispatch]);
 
-    if(!showForm){
+    if(!showForm || isLoggedIn){
         return null;
     }
 

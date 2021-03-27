@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { PrimaryButton, SecondaryButton } from "../../../Components/Buttons";
 import { FormGroup } from "../../../Components/FormGroup";
 import { LoadingIcon } from "../../../Components/LoadingIcon";
 import { onLogin } from "../../../Modules/API/Authentcation";
-import { APIErrorResponse } from "../../../Modules/API/d.types";
+import { APIErrorResponse, APIUserResponse } from "../../../Modules/API/d.types";
+import { userLoggedIn } from "../../../Redux/Actions/UserActions";
 import { AUTH_POPUP_PAGES } from './Popup';
 
 export const Login: React.FC<{changePage: Function}> = ({
@@ -18,18 +20,20 @@ export const Login: React.FC<{changePage: Function}> = ({
     const [errors, setErrors] = useState(null as APIErrorResponse | null);
 
     const cancelToken = useRef(axios.CancelToken.source());
+    const dispatch = useDispatch();
 
     const onLoginSubmit = useCallback(async () => {
         setIsLoading(true);
         try{
-            await onLogin(email, password, cancelToken.current);
-            alert("logged in");
+            const user = await onLogin(email, password, cancelToken.current);
+            dispatch(userLoggedIn(user as APIUserResponse));
+
         } catch (e) {
             setErrors(e as APIErrorResponse);
             cancelToken.current = axios.CancelToken.source();
             setIsLoading(false);
         }
-    }, [email, password]);
+    }, [email, password, dispatch]);
 
     useEffect(() => {
         return () => {

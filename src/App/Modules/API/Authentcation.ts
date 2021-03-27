@@ -1,6 +1,6 @@
 import axios, { CancelTokenSource } from "axios";
 import { API } from "../Axios";
-import { APIErrorResponse } from "./d.types";
+import { APIErrorResponse, APIUserResponse } from "./d.types";
 
 export const onSignUp = (
     username: string,
@@ -24,7 +24,8 @@ export const onSignUp = (
             resolve(true);
 
         } catch (e) {
-            if(e.response && !axios.isCancel(e)){
+            if(axios.isCancel(e)){ return; }
+            if(e.response){
                 reject(e.response.data as APIErrorResponse);
             } else {
                 reject({
@@ -43,21 +44,22 @@ export const onLogin = (
     email: string,
     password: string,
     cancel_token: CancelTokenSource
-): Promise<Boolean | APIErrorResponse> => {
+): Promise<APIUserResponse | APIErrorResponse> => {
     return new Promise(async (resolve, reject) => {
 
         try{
-            await API.post('/auth/login', {
+            const { data } = await API.post('/auth/login', {
                 email,
                 password,
             }, {
                 cancelToken: cancel_token.token
             });
 
-            resolve(true);
+            resolve(data.user);
 
         } catch (e) {
-            if(e.response && !axios.isCancel(e)){
+            if(axios.isCancel(e)){ return; }
+            if(e.response){
                 reject(e.response.data as APIErrorResponse);
             } else {
                 reject({

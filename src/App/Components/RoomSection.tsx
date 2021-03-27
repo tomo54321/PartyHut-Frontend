@@ -4,7 +4,7 @@ export const RoomSection: React.FC<{ title: string, children: any, noGrid?: bool
     children
 }) => (
     <div className="mb-10">
-        <h3 className="block mb-5 text-xl uppercase opacity-50">{title}</h3>
+        <h3 className="block mb-5 text-lg font-semibold uppercase opacity-25">{title}</h3>
 
         {
             noGrid ? children :
