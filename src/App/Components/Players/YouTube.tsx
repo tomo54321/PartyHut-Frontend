@@ -14,7 +14,7 @@ export const YTPlayer: React.FC<YouTubePlayerProps> = ({
             <ReactPlayer
                 ref={player}
                 controls={false}
-                playing={false}
+                playing={true}
                 width="100%"
                 height="100%"
                 onPause={() => {

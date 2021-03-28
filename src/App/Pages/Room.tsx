@@ -1,6 +1,5 @@
 import { RoomBackgroundImage } from "../Components/RoomBackgroundImage"
 import bgImage from '../Assets/Backgrounds/default.jpg';
-import { YTPlayer } from "../Components/Players/YouTube";
 import { RoomHeading } from "../Components/RoomHeading";
 import { ChatBox } from "../Components/ChatBox";
 import { useSelector } from "react-redux";
@@ -12,6 +11,8 @@ import { useHistory, useRouteMatch } from "react-router";
 import { APIErrorResponse } from "../Modules/API/d.types";
 import { AlertTriangle } from "react-feather";
 import { PrimaryButton } from "../Components/Buttons";
+import { Player } from "../Components/Players/Player";
+import { PickAndQueue } from "../Components/Room/PickAndQueue";
 
 const socket = io("192.168.68.134:4001", {
     autoConnect: false,
@@ -19,25 +20,30 @@ const socket = io("192.168.68.134:4001", {
     path: "/",
     transports: ["websocket"]
 });
+const defaultRoomState = { 
+    id: "", 
+    name: "", 
+    host: { username: "" },
+    on_deck: {
+        playing: false,
+        platform: "" as "YouTube" | "SoundCloud",
+        platformId: "",
+        songStartedAt: Date.now()
+    }
+};
 
 export const Room = () => {
 
     const [isConnecting, setIsConnecting] = useState(true);
     const [socketError, setSocketError] = useState({ errors: [] } as APIErrorResponse);
-    const [room, setRoom] = useState({ id: "", name: "", host: { username: "" } });
+    const [room, setRoom] = useState(defaultRoomState);
 
     const currentAuth = useSelector((state: ApplicationState) => state.user);
     const match = useRouteMatch();
     const history = useHistory();
 
-    const onJoinedRoom = useCallback(({ id, name }: { id: string, name: string }) => {
-        setRoom({
-            id,
-            name,
-            host: {
-                username: "Bob"
-            }
-        });
+    const onJoinedRoom = useCallback((roomData) => {
+        setRoom(roomData);
         setIsConnecting(false);
     }, [setRoom, setIsConnecting]);
 
@@ -58,6 +64,7 @@ export const Room = () => {
         } else if (reason === "io client disconnect") { // We disconnected
             history.push("/");
         } else { // We lost connection
+            console.log(reason);
             setSocketError({
                 errors: [{
                     param: "connection",
@@ -72,15 +79,24 @@ export const Room = () => {
         socket.on("joined room", onJoinedRoom);
         socket.on("critical error", onSocketError);
         socket.on("disconnect", onSocketConnectionError);
-        socket.connect();
+
+        socket.io.opts.query = {username: currentAuth.username};
+        
         socket.emit("join room", { id: (match.params as any).roomId });
         return () => {
             socket.off("critical error", onSocketError);
             socket.off("disconnect", onSocketConnectionError);
             socket.off("joined room", onJoinedRoom);
-            socket.disconnect();
         };
-    }, [match.params, onJoinedRoom, onSocketError, onSocketConnectionError]);
+    }, [match.params, currentAuth, onJoinedRoom, onSocketError, onSocketConnectionError]);
+
+    useEffect(() => {
+        socket.connect();
+
+        return () => {
+            socket.disconnect();
+        }
+    }, []);
 
     if (isConnecting) {
         return (
@@ -118,10 +134,26 @@ export const Room = () => {
                     />
 
                     <div className="mx-auto mt-5 w-4/5 lg:w-full lg:max-w-xl">
-                        <YTPlayer
-                            id="I1NuCWfYeYc"
+                        <Player 
+                            isPlaying={room.on_deck.playing}
+                            platform={room.on_deck.platform}
+                            platformId={room.on_deck.platformId}
                         />
                     </div>
+
+                    <div className="flex justify-between">
+                        <div className="w-1/4">
+                            <PickAndQueue 
+                                isDJ={false}
+                                isInQueue={false}
+                            />
+                        </div>
+                        <div className="w-1/4">
+                            <span>Woot!</span>
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -129,6 +161,7 @@ export const Room = () => {
             <ChatBox
                 loggedIn={currentAuth.logged_in}
                 username={currentAuth.username || "User"}
+                socket={socket}
             />
         </div>
     )

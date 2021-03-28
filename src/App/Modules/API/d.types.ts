@@ -32,3 +32,7 @@ export interface APIPlaylistListResponse {
     title: string;
     totalSongs: Number;
 }
+export interface APIBasicRoomResponse {
+    id: string;
+    title: string;
+}

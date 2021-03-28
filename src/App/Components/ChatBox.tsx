@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Send } from "react-feather";
 
 interface Message {
@@ -7,34 +7,68 @@ interface Message {
     message: string;
 }
 interface ChatBoxProps {
+    socket: SocketIOClient.Socket,
     loggedIn: boolean;
     username: string;
 }
 export const ChatBox: React.FC<ChatBoxProps> = ({
     loggedIn,
     username,
+    socket,
 }) => {
 
     const [chats, setChats] = useState([] as Message[]);
     const [message, setMessage] = useState("");
 
+    const lastMessage = useRef(0);
+
     const onSendChatMessage = useCallback(() => {
+
+        if(lastMessage.current > (Date.now() - 1000)){
+            alert("Hold Up! Please wait a moment before sending another message!");
+            return;
+        }
+        lastMessage.current = Date.now();
+
         const messages = [...chats];
         messages.push({
             id: Date.now(),
             username: username,
             message: message
         } as Message);
+
+        socket.emit("send chat message", {
+            message
+        });
+
         setChats(messages);
         setMessage("");
-    }, [username, message, chats, setMessage, setChats]);
+    }, [username, message, socket, chats, setMessage, setChats]);
 
     const allMessages = chats.map(msg => (
         <div key={msg.id} className="p-3">
             <span className="text-blue-500 pr-1">{msg.username}:</span>
             <span>{msg.message}</span>
         </div>
-    ))
+    ));
+
+    const onReceiveChatMessage = useCallback(({id, message, username}: {id: any, message: string, username: string}) => {
+        const oldChats = [...chats];
+        oldChats.push({
+            id,
+            message,
+            username
+        });
+        setChats(oldChats);
+    }, [chats, setChats]);
+
+    // Subscribe to chat message events.
+    useEffect(() => {
+        socket.on("receive chat message", onReceiveChatMessage);
+        return () => {
+            socket.off("receive chat message", onReceiveChatMessage);
+        }
+    }, [socket, onReceiveChatMessage]);
 
     return (
         <div className="hidden md:flex flex-col md:w-44 lg:w-72 bg-gray-900 flex-shrink-0">
