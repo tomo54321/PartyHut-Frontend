@@ -20,7 +20,7 @@ export const SCPlayer: React.FC<SoundCloudPlayerProps> = ({
     volume,
     playerRef
 }) => {
-    const player = useRef(null as null | SoundCloudPlayer);
+    const player = useRef<SoundCloudPlayer>(null);
     return (
         <div className="aspect-h-9 aspect-w-16">
             <ReactPlayer
