@@ -14,8 +14,8 @@ export const Login: React.FC<{changePage: Function}> = ({
     changePage
 }) => {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("tom.reeve16@gmail.com");
+    const [password, setPassword] = useState("T0m054t21.!");
     const [isLoading, setIsLoading] = useState(false);
     
     const [errors, setErrors] = useState(null as APIErrorResponse | null);

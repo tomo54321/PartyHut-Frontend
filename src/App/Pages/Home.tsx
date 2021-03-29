@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { PrimaryButton } from "../Components/Buttons";
 import { StandardLayout } from "../Components/Layout";
 import { PageHeading } from "../Components/PageHeading";
@@ -6,19 +6,28 @@ import { RoomCard } from "../Components/RoomCard";
 import { SearchBar } from "../Components/SearchBar";
 import { RoomSection } from "../Components/RoomSection";
 import { useHistory } from "react-router";
-import { APIBasicRoomResponse } from "../Modules/API/d.types";
+import { APIBasicRoomResponse, APIErrorResponse, APIRoomLayoutResponse } from "../Modules/API/d.types";
 import { CreateRoomModal } from "../Components/Room/CreateModal";
 import { useDispatch, useSelector } from "react-redux";
 import { ApplicationState } from "../Redux/Store";
 import { showAuthForm } from "../Redux/Actions/AuthFormActions";
+import { getRooms } from "../Modules/API/Rooms";
+import axios from "axios";
+import { LoadingIcon } from "../Components/LoadingIcon";
 
 export const Home = () => {
+
+    const [rooms, setRooms] = useState<APIRoomLayoutResponse[]>([]);
+
+    const [loading, setIsLoading] = useState(true);
     const [query, setQuery] = useState("");
     const [showCreateRoomModal, setShowCreateRoomModal] = useState(false);
 
     const isLoggedIn = useSelector((state: ApplicationState) => state.user.logged_in);
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const cancelToken = useRef(axios.CancelToken.source());
 
     const onRoomCreated = useCallback((room: APIBasicRoomResponse) => {
         history.push(`/room/${room.id}`);
@@ -27,7 +36,34 @@ export const Home = () => {
     const onSearchSubmit = useCallback(() => {
         console.log(query);
     }, [query]);
+
+    useEffect(() => {
+        getRooms(cancelToken.current)
+        .then(layout => {
+            setRooms(layout);
+            setIsLoading(false);
+        })
+        .catch((e: APIErrorResponse) => {
+            console.log(e.errors[0].msg)
+        })
+    }, []);
     
+    const roomSections = rooms.map(section => (
+        <RoomSection key={"section-" + section.title} title={section.title}>
+            {
+                section.rooms.map((room) => (
+                    <RoomCard
+                        key={"section-" + section.title + "-room-" + room.id}
+                        id={room.id}
+                        title={room.name}
+                        username={room.host.username}
+                        image="https://placehold.it/250x150"
+                    />
+                ))
+            }
+        </RoomSection>
+    ));
+
     return (
         <StandardLayout>
 
@@ -59,50 +95,9 @@ export const Home = () => {
                 </div>
             </RoomSection>
 
-
-
-            <RoomSection title="Trending">
-                <RoomCard 
-                    id="abcd"
-                    title="My Epic Room"
-                    username="tomo54321"
-                    image="https://placehold.it/250x150"
-                />
-                <RoomCard 
-                    id="abcd"
-                    title="My Epic Room"
-                    username="tomo54321"
-                    image="https://placehold.it/250x150"
-                />
-                <RoomCard 
-                    id="abcd"
-                    title="My Epic Room"
-                    username="tomo54321"
-                    image="https://placehold.it/250x150"
-                />
-            </RoomSection>
-
-            <RoomSection title="New Rooms">
-                <RoomCard 
-                    id="abcd"
-                    title="My Epic Room"
-                    username="tomo54321"
-                    image="https://placehold.it/250x150"
-                />
-                <RoomCard 
-                    id="abcd"
-                    title="My Epic Room"
-                    username="tomo54321"
-                    image="https://placehold.it/250x150"
-                />
-                <RoomCard 
-                    id="abcd"
-                    title="My Epic Room"
-                    username="tomo54321"
-                    image="https://placehold.it/250x150"
-                />
-            </RoomSection>
-
+            {
+                loading ? <LoadingIcon /> : roomSections
+            }
 
             {
                 showCreateRoomModal ? <CreateRoomModal onCreated={onRoomCreated} onCancel={() => setShowCreateRoomModal(false)} /> : null

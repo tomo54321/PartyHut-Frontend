@@ -34,5 +34,16 @@ export interface APIPlaylistListResponse {
 }
 export interface APIBasicRoomResponse {
     id: string;
+    name: string;
+}
+
+export interface APIRoomLayoutRoomResponse extends APIBasicRoomResponse{
+    host: {
+        username: string
+    }
+}
+
+export interface APIRoomLayoutResponse {
     title: string;
+    rooms: APIRoomLayoutRoomResponse[]
 }

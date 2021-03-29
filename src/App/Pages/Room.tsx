@@ -14,7 +14,6 @@ import { APIErrorResponse } from '../Modules/API/d.types';
 import { ConnectingToRoom } from '../Components/Room/Connecting';
 import { CriticalRoomError } from '../Components/Room/CriticalError';
 import { RouteComponentProps } from 'react-router';
-import { PrimaryButton } from '../Components/Buttons';
 
 const socket = io("192.168.68.134:4001", {
     autoConnect: false,
@@ -173,7 +172,7 @@ class RoomPage extends React.Component<RoomPageProps> {
     // The player has reached the end.
     onSongHasFinished(){
         if((this.state as RoomPageState).room?.is_dj){
-            socket.emit("song finished");
+            socket.emit("next song");
         }
     }
 
@@ -187,9 +186,15 @@ class RoomPage extends React.Component<RoomPageProps> {
 
         return (
             <RoomLayout
+                roomName={room.name}
+                roomHostUsername={room.host.username}
                 background={bgImage}
                 socket={socket}
                 user={user}
+                volume={playerVolume}
+                setVolume={(vol: number) => {
+                    this.setState({ playerVolume: vol })
+                }}
             >
 
                 {/* The Player */}
@@ -219,14 +224,6 @@ class RoomPage extends React.Component<RoomPageProps> {
                     {/* Woot etc. */}
                     <div className="w-1/4">
                         <span>Woot!</span>
-                        <PrimaryButton 
-                            type="button"
-                            title="Enable Sound"
-                            disabled={playerVolume > 1}
-                            onClick={() => {
-                                this.setState({ playerVolume: 100 })
-                            }}
-                        />
                     </div>
                 </div>
 
