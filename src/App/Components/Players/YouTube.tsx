@@ -20,7 +20,7 @@ export const YTPlayer: React.FC<YouTubePlayerProps> = ({
     volume,
     playerRef
 }) => {
-    const player = useRef(null as null | YouTubePlayer);
+    const player = useRef<YouTubePlayer>(null);
     return (
         <div className="aspect-h-9 aspect-w-16">
             <ReactPlayer
