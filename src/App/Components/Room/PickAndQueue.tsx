@@ -6,10 +6,12 @@ import { SelectDropdown } from "../SelectDropdown";
 
 export const PickAndQueue: React.FC<{
     isDJ: boolean,
-    isInQueue: boolean
+    isInQueue: boolean,
+    onJoinQueue: Function,
 }> = ({
     isDJ,
-    isInQueue
+    isInQueue,
+    onJoinQueue
 }) => {
 
     const playlists = useSelector((state: ApplicationState) => state.user.playlists);
@@ -52,6 +54,10 @@ export const PickAndQueue: React.FC<{
                 type="button"
                 title={isDJ ? "You're DJing" : isInQueue ? "You're in the queue" : "Start DJing"}
                 disabled={isDJ || isInQueue}
+                onClick={e => {
+                    onJoinQueue(playlistValue)
+                    e.preventDefault();
+                }}
             />
         </div>
     )

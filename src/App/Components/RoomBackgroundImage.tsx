@@ -12,6 +12,9 @@ export const RoomBackgroundImage: React.FC<RoomBackgroundImageProps> = ({
         <img 
         src={url}
         className={["absolute", "top-0", "left-0", "h-full", "w-full", "object-cover", imageClasses].join(" ")}
+        style={{
+            zIndex: -1
+        }}
         onLoad={e => {
             setLoaded(true)
         }}

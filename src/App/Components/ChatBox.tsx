@@ -17,6 +17,10 @@ export const ChatBox: React.FC<ChatBoxProps> = ({
     socket,
 }) => {
 
+    socket.on("receive chat message", () => {
+        console.log("I got a message");
+    })
+
     const [chats, setChats] = useState([] as Message[]);
     const [message, setMessage] = useState("");
 

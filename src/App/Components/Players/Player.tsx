@@ -1,17 +1,33 @@
+import { useCallback, useRef } from "react";
 import { SCPlayer } from "./SoundCloud"
 import { YTPlayer } from "./YouTube"
 
 interface PlayerProps {
     isPlaying: Boolean;
     platformId?: string;
+    itemStartedAt?: number;
+    onEnded: Function;
+    volume: number;
     platform?: "YouTube" | "SoundCloud"
 }
 
 export const Player: React.FC<PlayerProps> = ({
     isPlaying,
     platformId,
+    itemStartedAt,
+    onEnded,
+    volume,
     platform
 }) => {
+
+    const player = useRef(null as any);
+
+    const onPlayerCanPlay = useCallback(() => {
+            const elapsed = Date.now() - itemStartedAt!;
+            const elapsedSec = elapsed / 1000;
+            player.current.seekTo(elapsedSec, "seconds");
+        
+    }, [player, itemStartedAt]);
 
     if (!isPlaying) {
         return (
@@ -28,7 +44,13 @@ export const Player: React.FC<PlayerProps> = ({
         return (
             <PlayerFrame>
                 <YTPlayer 
+                    playerRef={player}
                     id={platformId!}
+                    onEnded={onEnded}
+                    volume={volume}
+                    onReady={onPlayerCanPlay}
+                    onPlay={() => {}}
+                    onBufferEnded={() => {}}
                 />
             </PlayerFrame>
         )
@@ -36,7 +58,13 @@ export const Player: React.FC<PlayerProps> = ({
         return (
             <PlayerFrame>
                 <SCPlayer 
+                    playerRef={player}
                     id={platformId!}
+                    onEnded={onEnded}
+                    volume={volume}
+                    onReady={onPlayerCanPlay}
+                    onPlay={() => {}}
+                    onBufferEnded={() => {}}
                 />
             </PlayerFrame>
         )
