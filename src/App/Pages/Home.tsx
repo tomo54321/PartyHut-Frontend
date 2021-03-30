@@ -14,6 +14,7 @@ import { showAuthForm } from "../Redux/Actions/AuthFormActions";
 import { getRooms } from "../Modules/API/Rooms";
 import axios from "axios";
 import { LoadingIcon } from "../Components/LoadingIcon";
+import defaultArtwork from '../Assets/default-cover.jpg';
 
 export const Home = () => {
 
@@ -57,7 +58,7 @@ export const Home = () => {
                         id={room.id}
                         title={room.name}
                         username={room.host.username}
-                        image="https://placehold.it/250x150"
+                        image={room.thumbnail === "" ? defaultArtwork : room.thumbnail}
                     />
                 ))
             }

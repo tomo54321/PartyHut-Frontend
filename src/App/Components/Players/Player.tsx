@@ -23,10 +23,18 @@ export const Player: React.FC<PlayerProps> = ({
     const player = useRef(null as any);
 
     const onPlayerCanPlay = useCallback(() => {
-            const elapsed = Date.now() - itemStartedAt!;
-            const elapsedSec = elapsed / 1000;
-            player.current.seekTo(elapsedSec, "seconds");
+        let startAtSeconds = itemStartedAt;
         
+        if(typeof startAtSeconds === "string"){
+            const startAtDate = new Date(startAtSeconds);
+            startAtSeconds = startAtDate.getTime();
+        }
+
+        const elapsed = Date.now() - startAtSeconds!;
+        const elapsedSec = elapsed / 1000;
+
+        player.current.seekTo(elapsedSec, "seconds");
+
     }, [player, itemStartedAt]);
 
     if (!isPlaying) {
@@ -40,10 +48,10 @@ export const Player: React.FC<PlayerProps> = ({
         )
     }
 
-    if(platform === "YouTube"){
+    if (platform === "YouTube") {
         return (
             <PlayerFrame>
-                <YTPlayer 
+                <YTPlayer
                     playerRef={player}
                     id={platformId!}
                     onEnded={onEnded}
@@ -57,14 +65,14 @@ export const Player: React.FC<PlayerProps> = ({
     } else {
         return (
             <PlayerFrame>
-                <SCPlayer 
+                <SCPlayer
                     playerRef={player}
                     id={platformId!}
                     onEnded={onEnded}
                     volume={volume}
                     onReady={onPlayerCanPlay}
-                    onPlay={() => {}}
-                    onBufferEnded={() => {}}
+                    onPlay={onPlayerCanPlay}
+                    onBufferEnded={onPlayerCanPlay}
                 />
             </PlayerFrame>
         )

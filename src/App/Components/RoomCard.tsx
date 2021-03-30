@@ -14,7 +14,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({
     username,
 }) => (
     <Link to={`/room/${id}`} className="relative rounded-md">
-        <img src={image} alt="" className="block w-full h-full" />
+        <img src={image} alt="" className="block w-full h-full object-cover object-center"/>
         <div className="flex absolute bottom-0 w-full bg-gray-800 p-3 text-sm bg-opacity-75">
             <div className="flex-grow">
                 <span className="block font-semibold truncate">{title}</span>

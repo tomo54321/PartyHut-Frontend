@@ -181,8 +181,8 @@ class RoomPage extends React.Component<RoomPageProps> {
         const { user } = this.props;
         const { room, conn, critical, playerVolume } = this.state as RoomPageState;
 
-        if (conn || room === null) { return <ConnectingToRoom /> }
         if (critical !== null && critical.errors.length > 0) { return <CriticalRoomError errors={critical} /> }
+        if (conn || (room === null)) { return <ConnectingToRoom /> }
 
         return (
             <RoomLayout
@@ -205,7 +205,7 @@ class RoomPage extends React.Component<RoomPageProps> {
                         platformId={room!.on_deck.platformId}
                         itemStartedAt={room!.on_deck.songStartedAt}
                         onEnded={this.onSongHasFinished}
-                        volume={playerVolume}
+                        volume={playerVolume / 100}
                     />
                 </div>
 

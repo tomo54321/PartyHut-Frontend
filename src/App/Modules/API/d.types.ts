@@ -38,6 +38,7 @@ export interface APIBasicRoomResponse {
 }
 
 export interface APIRoomLayoutRoomResponse extends APIBasicRoomResponse{
+    thumbnail: string;
     host: {
         username: string
     }
