@@ -8,7 +8,7 @@ import { onLogin } from "../../../Modules/API/Authentcation";
 import { APIErrorResponse, APIUserResponse } from "../../../Modules/API/d.types";
 import { fetchAllPlaylists } from "../../../Modules/API/Playlists";
 import { userLoggedIn } from "../../../Redux/Actions/UserActions";
-import { AUTH_POPUP_PAGES } from './Popup';
+import { AUTH_POPUP_PAGES } from "../../Auth";
 
 export const Login: React.FC<{changePage: Function}> = ({
     changePage

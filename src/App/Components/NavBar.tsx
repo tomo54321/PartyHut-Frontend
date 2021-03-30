@@ -9,7 +9,7 @@ export const NavBar = () => {
 
     return (
         <aside className="flex justify-between flex-wrap sm:block sm:w-40 md:w-60 bg-gray-900 p-5">
-            <h1 className="sm:text-lg md:text-2xl sm:mb-5 md:mb-10 font-semibold text-indigo-200">PartyBus</h1>
+            <h1 className="sm:text-lg md:text-2xl sm:mb-5 md:mb-10 font-semibold text-indigo-200">PartyHut</h1>
 
             <button
                 onClick={e => {

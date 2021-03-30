@@ -5,7 +5,7 @@ import { FormGroup } from "../../../Components/FormGroup";
 import { LoadingIcon } from "../../../Components/LoadingIcon";
 import { onSignUp } from "../../../Modules/API/Authentcation";
 import { APIErrorResponse } from "../../../Modules/API/d.types";
-import { AUTH_POPUP_PAGES } from './Popup';
+import { AUTH_POPUP_PAGES } from "../../Auth";
 
 export const SignUp: React.FC<{changePage: Function}> = ({
     changePage

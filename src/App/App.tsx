@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { AppContainer } from './Components/AppContainer';
+import { AuthRoute } from './Components/AuthRoute';
 import { NavBar } from './Components/NavBar';
 import { Home } from './Pages/Home';
 import { Music } from './Pages/Music';
@@ -18,12 +19,12 @@ const App: React.FC<{}> = () => {
 				<div className="max-w-full sm:h-full sm:w-full sm:overflow-y-auto">
 					<Switch>
 						<Route path="/" exact component={Home} />
-						<Route path="/room/:roomId" exact component={Room} />
+						<AuthRoute path="/room/:roomId" exact component={Room} />
 
-						<Route path="/music" exact component={Music} />
+						<AuthRoute path="/music" exact component={Music} />
 						
-						<Route path="/playlists" exact component={AllPlaylists} />
-						<Route path="/playlist/:playlistId" exact component={ShowPlaylist} />
+						<AuthRoute path="/playlists" exact component={AllPlaylists} />
+						<AuthRoute path="/playlist/:playlistId" exact component={ShowPlaylist} />
 					</Switch>
 				</div>
 				<AuthPopup />

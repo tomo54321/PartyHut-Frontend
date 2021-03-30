@@ -128,7 +128,7 @@ class RoomPage extends React.Component<RoomPageProps> {
                     errors: [
                         {
                             param: "connection",
-                            msg: "You were disconnected from the PartyBus servers."
+                            msg: "You were disconnected from the PartyHut servers."
                         }
                     ]
                 });

@@ -4,14 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "../../../Components/Modal";
 import { closeAuthForm } from "../../../Redux/Actions/AuthFormActions";
 import { ApplicationState } from "../../../Redux/Store";
+import { AUTH_POPUP_PAGES } from "../../Auth";
 import { Login } from "./Login";
 import { SignUp } from "./SignUp";
-
-export const AUTH_POPUP_PAGES = {
-    LOGIN: 1,
-    SIGN_UP: 2,
-    FORGOT_PASSWORD: 3
-};
 
 export const AuthPopup = () => {
 
