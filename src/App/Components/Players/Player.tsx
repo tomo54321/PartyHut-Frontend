@@ -1,4 +1,5 @@
 import { useCallback, useRef } from "react";
+import YouTubePlayer from "react-player/youtube";
 import { SCPlayer } from "./SoundCloud"
 import { YTPlayer } from "./YouTube"
 
@@ -24,7 +25,6 @@ export const Player: React.FC<PlayerProps> = ({
 
     const onPlayerCanPlay = useCallback(() => {
         let startAtSeconds = itemStartedAt;
-        
         if(typeof startAtSeconds === "string"){
             const startAtDate = new Date(startAtSeconds);
             startAtSeconds = startAtDate.getTime();
@@ -33,7 +33,9 @@ export const Player: React.FC<PlayerProps> = ({
         const elapsed = Date.now() - startAtSeconds!;
         const elapsedSec = elapsed / 1000;
 
-        player.current.seekTo(elapsedSec, "seconds");
+        if(Math.round((player.current as YouTubePlayer).getCurrentTime()) !== Math.round(elapsedSec)){
+            player.current.seekTo(elapsedSec, "seconds");
+        }
 
     }, [player, itemStartedAt]);
 
@@ -57,8 +59,8 @@ export const Player: React.FC<PlayerProps> = ({
                     onEnded={onEnded}
                     volume={volume}
                     onReady={onPlayerCanPlay}
-                    onSeek={onPlayerCanPlay}
-                    onPlay={() => {}}
+                    onSeek={() => {}}
+                    onPlay={onPlayerCanPlay}
                     onBufferEnded={() => {}}
                 />
             </PlayerFrame>
@@ -72,9 +74,8 @@ export const Player: React.FC<PlayerProps> = ({
                     onEnded={onEnded}
                     volume={volume}
                     onReady={onPlayerCanPlay}
-                    onSeek={onPlayerCanPlay}
                     onPlay={onPlayerCanPlay}
-                    onBufferEnded={onPlayerCanPlay}
+                    onDuration={onPlayerCanPlay}
                 />
             </PlayerFrame>
         )

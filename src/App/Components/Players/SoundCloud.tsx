@@ -7,8 +7,7 @@ interface SoundCloudPlayerProps {
     playerRef?: React.MutableRefObject<SoundCloudPlayer | null>;
     onReady: any;
     onPlay: any;
-    onBufferEnded: any;
-    onSeek: any;
+    onDuration: any;
     onEnded: any;
     volume: number;
 }
@@ -16,10 +15,9 @@ export const SCPlayer: React.FC<SoundCloudPlayerProps> = ({
     id,
     onReady,
     onPlay,
-    onBufferEnded,
+    onDuration,
     onEnded,
     volume,
-    onSeek,
     playerRef
 }) => {
     const player = useRef(null as SoundCloudPlayer | null);
@@ -34,9 +32,8 @@ export const SCPlayer: React.FC<SoundCloudPlayerProps> = ({
                 }}
                 onReady={onReady}
                 onPlay={onPlay}
-                onBufferEnd={onBufferEnded}
+                onProgress={onDuration}
                 onEnded={onEnded}
-                onSeek={onSeek}
                 controls={false}
                 playing={true}
                 volume={volume}
