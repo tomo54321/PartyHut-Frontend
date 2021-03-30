@@ -57,6 +57,7 @@ export const Player: React.FC<PlayerProps> = ({
                     onEnded={onEnded}
                     volume={volume}
                     onReady={onPlayerCanPlay}
+                    onSeek={onPlayerCanPlay}
                     onPlay={() => {}}
                     onBufferEnded={() => {}}
                 />
@@ -71,6 +72,7 @@ export const Player: React.FC<PlayerProps> = ({
                     onEnded={onEnded}
                     volume={volume}
                     onReady={onPlayerCanPlay}
+                    onSeek={onPlayerCanPlay}
                     onPlay={onPlayerCanPlay}
                     onBufferEnded={onPlayerCanPlay}
                 />

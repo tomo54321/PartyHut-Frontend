@@ -9,6 +9,7 @@ interface YouTubePlayerProps {
     onPlay: any;
     onBufferEnded: any;
     onEnded: any;
+    onSeek: any;
     volume: number;
 }
 export const YTPlayer: React.FC<YouTubePlayerProps> = ({
@@ -18,6 +19,7 @@ export const YTPlayer: React.FC<YouTubePlayerProps> = ({
     onBufferEnded,
     onEnded,
     volume,
+    onSeek,
     playerRef
 }) => {
     const player = useRef(null as YouTubePlayer | null);
@@ -33,6 +35,7 @@ export const YTPlayer: React.FC<YouTubePlayerProps> = ({
                 onReady={onReady}
                 onPlay={onPlay}
                 onEnded={onEnded}
+                onSeek={onSeek}
                 controls={false}
                 volume={volume}
                 playing={true}
