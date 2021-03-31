@@ -39,6 +39,8 @@ export const Home = () => {
     }, [query]);
 
     useEffect(() => {
+        document.title = "All Huts - PartyHut";
+
         getRooms(cancelToken.current)
         .then(layout => {
             setRooms(layout);

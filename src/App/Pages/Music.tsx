@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { StandardLayout } from "../Components/Layout";
@@ -73,6 +73,10 @@ export const Music = () => {
             alert(exception.errors[0].msg);
             setLoading(false);
         }
+    }, []);
+
+    useEffect(() => {
+        document.title = "Search Music - PartyHut";
     }, []);
 
     return (

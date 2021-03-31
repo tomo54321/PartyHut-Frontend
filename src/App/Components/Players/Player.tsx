@@ -36,7 +36,8 @@ export const Player: React.FC<PlayerProps> = ({
         const playerTime = Math.round((player.current as YouTubePlayer).getCurrentTime());
 
         // Within a 10 second window?
-        if(playerTime > (elapsedSec + 5) || playerTime < (elapsedSec - 5)){
+        const isOver = (player.current as YouTubePlayer).getCurrentTime() === (player.current as YouTubePlayer).getDuration();
+        if((playerTime > (elapsedSec + 5) || playerTime < (elapsedSec - 5)) && !isOver){
             player.current.seekTo(elapsedSec, "seconds");
         }
 

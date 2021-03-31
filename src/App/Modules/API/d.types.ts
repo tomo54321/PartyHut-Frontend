@@ -14,7 +14,6 @@ export interface APIUserResponse{
 }
 
 export interface APISong{
-    id: string;
     title: string;
     postedBy: string;
     platform: "YouTube" | "SoundCloud";

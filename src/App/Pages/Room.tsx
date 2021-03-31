@@ -16,6 +16,8 @@ import { CriticalRoomError } from '../Components/Room/CriticalError';
 import { RouteComponentProps } from 'react-router';
 import { AvatarList } from '../Components/Room/AvatarList';
 import { Avatar } from '../Components/Room/Avatar';
+import { PrimaryButton } from '../Components/Buttons';
+import { Heart, Meh, PlusCircle } from 'react-feather';
 
 const socket = io("192.168.68.134:4001", {
     autoConnect: false,
@@ -106,17 +108,23 @@ class RoomPage extends React.Component<RoomPageProps> {
     }
     // When the server has let us in the room
     socketOnJoinRoom(room: RoomInterface) {
+        document.title = room.name + " - PartyHut";
         this.setState({
             conn: false,
+            critical: null,
             room
         })
     }
     // The server has a said there was a major error!
     socketOnCriticalError(err: APIErrorResponse) {
-        this.setState({
-            critical: err,
-            conn: false
-        })
+        if((this.state as RoomPageState).critical !== null){
+            this.setState({ conn: false });
+        } else {
+            this.setState({
+                critical: err,
+                conn: false
+            })
+        }
     }
     // The server has said there was an error
     socketOnBasicError(err: APIErrorResponse) {
@@ -267,7 +275,16 @@ class RoomPage extends React.Component<RoomPageProps> {
 
                         {/* Woot etc. */}
                         <div className="w-1/3">
-                            <span>Woot!</span>
+                            {
+                                room.is_dj ? 
+                                    <PrimaryButton type="button" onClick={() => { socket.emit("next song") }} title="Skip Song"/>
+                                : 
+                                <div className="flex space-x-2">
+                                    <button className="w-full text-center" type="button" onClick={() => {}}><Heart className="mx-auto"/><br />Love</button>
+                                    <button className="w-full text-center" type="button" onClick={() => {}}><PlusCircle className="mx-auto"/><br />Grab</button>
+                                    <button className="w-full text-center" type="button" onClick={() => {}}><Meh className="mx-auto"/><br />Boo</button>
+                                </div>
+                            }
                         </div>
                     </div>
 

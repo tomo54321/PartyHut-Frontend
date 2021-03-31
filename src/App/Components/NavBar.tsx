@@ -71,7 +71,7 @@ const UserNavBarLink = () => {
     }
     return (
         <NavBarLink
-            to="/profile"
+            to={`/u/${userStatus.username}`}
             title={userStatus.username}
             LinkIcon={props => <User {...props} />}
         />

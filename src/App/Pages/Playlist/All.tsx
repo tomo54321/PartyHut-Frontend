@@ -45,6 +45,7 @@ export const AllPlaylists = () => {
 
     useEffect(() => {
         const token = axios.CancelToken.source();
+        document.title = "My Playlists - PartyHut";
 
         fetchAllPlaylists(token)
         .then(playlists => {

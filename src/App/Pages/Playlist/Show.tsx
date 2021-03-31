@@ -31,7 +31,7 @@ export const ShowPlaylist = () => {
     const onSongDeleted = useCallback(() => {
         let oldPlaylist = {...playlist};
         const oldSongs = oldPlaylist.songs;
-        const songIndex = oldSongs.findIndex(song => song.id === songId.current);
+        const songIndex = oldSongs.findIndex(song => song.platformId === songId.current);
 
         if(songIndex > 0){
             oldSongs.splice(songIndex, 1);
@@ -64,7 +64,7 @@ export const ShowPlaylist = () => {
             }))
         };
         let exportString = JSON.stringify(playlistExport);
-        DownloadFile(exportString, `partyhouse-export-${Date.now()}.json`);
+        DownloadFile(exportString, `partyhut-export-${Date.now()}.json`);
         
     }, [playlist]);
 
@@ -73,6 +73,7 @@ export const ShowPlaylist = () => {
         setIsLoading(true);
         fetchSinglePlaylist((match.params as any).playlistId, token)
             .then(playlist => {
+                document.title = playlist.title + " - PartyHut";
                 setPlaylist(playlist);
                 setIsLoading(false);
             })
@@ -180,7 +181,7 @@ const PlaylistSongs: React.FC<{ songs: APISong[], currentSongId: React.MutableRe
         }
         return (
             <SongRow
-                key={`${song.id}`}
+                key={`${song.platform}-${song.platformId}`}
                 title={song.title}
                 postedBy={song.postedBy}
                 thumbnailUrl={song.thumbnailUrl}
@@ -189,7 +190,7 @@ const PlaylistSongs: React.FC<{ songs: APISong[], currentSongId: React.MutableRe
                     {
                         title: "Remove Song",
                         onClick() { 
-                            currentSongId.current = song.id;
+                            currentSongId.current = song.platformId;
                             setShowConfirmSongDelete(true);
                         }
                     }
