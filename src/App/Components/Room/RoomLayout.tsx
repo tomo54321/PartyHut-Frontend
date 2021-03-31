@@ -28,14 +28,16 @@ export const RoomLayout: React.FC<LayoutProps> = ({
         <div className="relative overflow-hidden h-full w-full">
             <RoomBackgroundImage url={background} />
 
-            <RoomHeading 
-                volume={volume}
-                name={roomName}
-                username={roomHostUsername}
-                setVolume={setVolume}
-            />
+            <div className="h-full flex flex-col">
+                <RoomHeading
+                    volume={volume}
+                    name={roomName}
+                    username={roomHostUsername}
+                    setVolume={setVolume}
+                />
 
-            {children}
+                {children}
+            </div>
         </div>
 
         <ChatBox

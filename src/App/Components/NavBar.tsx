@@ -27,7 +27,7 @@ export const NavBar = () => {
             <ul className={(navbarOpen ? "block" : "hidden") + " w-full mt-5 sm:mt-0 sm:block"}>
                 <NavBarLink
                     to="/"
-                    title="Rooms"
+                    title="Huts"
                     LinkIcon={(props) => <Home {...props} />}
                 />
                 <NavBarLink

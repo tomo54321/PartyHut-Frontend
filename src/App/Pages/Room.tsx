@@ -9,11 +9,13 @@ import { UserState } from '../Redux/Reducers/UserReducer';
 import { RoomLayout } from '../Components/Room/RoomLayout';
 import { Player } from '../Components/Players/Player';
 import { PickAndQueue } from '../Components/Room/PickAndQueue';
-import { Room as RoomInterface, RoomOnDeck } from '../@types/Room';
+import { Room as RoomInterface, RoomOnDeck, RoomUser } from '../@types/Room';
 import { APIErrorResponse } from '../Modules/API/d.types';
 import { ConnectingToRoom } from '../Components/Room/Connecting';
 import { CriticalRoomError } from '../Components/Room/CriticalError';
 import { RouteComponentProps } from 'react-router';
+import { AvatarList } from '../Components/Room/AvatarList';
+import { Avatar } from '../Components/Room/Avatar';
 
 const socket = io("192.168.68.134:4001", {
     autoConnect: false,
@@ -47,10 +49,13 @@ class RoomPage extends React.Component<RoomPageProps> {
         this.socketOnJoinRoom = this.socketOnJoinRoom.bind(this);
         this.socketOnCriticalError = this.socketOnCriticalError.bind(this);
         this.socketOnBasicError = this.socketOnBasicError.bind(this);
+        this.socketOnUserLeave = this.socketOnUserLeave.bind(this);
+        this.socketOnUserJoin = this.socketOnUserJoin.bind(this);
         this.socketOnJoinedDJQueue = this.socketOnJoinedDJQueue.bind(this);
         this.socketOnBecomeDJ = this.socketOnBecomeDJ.bind(this);
         this.socketOnRoomDeckChange = this.socketOnRoomDeckChange.bind(this);
         this.socketOnConnectionError = this.socketOnConnectionError.bind(this);
+
         this.onSongHasFinished = this.onSongHasFinished.bind(this);
 
     }
@@ -62,6 +67,9 @@ class RoomPage extends React.Component<RoomPageProps> {
         socket.on("joined queue", this.socketOnJoinedDJQueue);
         socket.on("became dj", this.socketOnBecomeDJ);
         socket.on("deck change", this.socketOnRoomDeckChange);
+
+        socket.on("user leave", this.socketOnUserLeave);
+        socket.on("user join", this.socketOnUserJoin);
 
         socket.on("critical error", this.socketOnCriticalError);
         socket.on("basic error", this.socketOnBasicError);
@@ -79,6 +87,9 @@ class RoomPage extends React.Component<RoomPageProps> {
         socket.off("joined queue", this.socketOnJoinedDJQueue);
         socket.off("became dj", this.socketOnBecomeDJ);
         socket.off("deck change", this.socketOnRoomDeckChange);
+
+        socket.off("user leave", this.socketOnUserLeave);
+        socket.off("user join", this.socketOnUserJoin);
 
         socket.off("critical error", this.socketOnCriticalError);
         socket.off("basic error", this.socketOnBasicError);
@@ -159,19 +170,39 @@ class RoomPage extends React.Component<RoomPageProps> {
         });
     }
     // The Room Deck changed
-    socketOnRoomDeckChange(roomDeck: RoomOnDeck){
-        console.log(roomDeck);
+    socketOnRoomDeckChange(roomDeck: RoomOnDeck) {
         this.setState((previousState: RoomPageState) => {
             const oldRoom = { ...previousState.room };
             oldRoom.on_deck = roomDeck;
             return { room: oldRoom }
         });
     }
+    // When a user joins the room
+    socketOnUserJoin(user: RoomUser) {
+        const room = { ...(this.state as RoomPageState).room };
+        if (room.users) {
+            room.users.push(user);
+        } else {
+            room.users = [user];
+        }
+        this.setState({ room });
+    }
+    // When a user leaves the room
+    socketOnUserLeave(userId: string) {
+        const room = { ...(this.state as RoomPageState).room };
+        if (room.users) {
+            const userIndex = room.users.findIndex(usr => usr.id === userId);
+            room.users.splice(userIndex, 1);
+        } else {
+            room.users = [];
+        }
+        this.setState({ room });
+    }
 
 
     // The player has reached the end.
-    onSongHasFinished(){
-        if((this.state as RoomPageState).room?.is_dj){
+    onSongHasFinished() {
+        if ((this.state as RoomPageState).room?.is_dj) {
             socket.emit("next song");
         }
     }
@@ -198,7 +229,7 @@ class RoomPage extends React.Component<RoomPageProps> {
             >
 
                 {/* The Player */}
-                <div className="mx-auto mt-5 w-4/5 lg:w-full lg:max-w-xl">
+                <div className="mx-auto mt-5 w-4/5 md:w-1/2 lg:w-full lg:max-w-xl">
                     <Player
                         isPlaying={room!.on_deck.playing}
                         platform={room!.on_deck.platform}
@@ -209,22 +240,37 @@ class RoomPage extends React.Component<RoomPageProps> {
                     />
                 </div>
 
-                {/* DJ & Woot Controls */}
-                <div className="flex justify-between">
-                    {/* DJ Queue and Playlist Select */}
-                    <div className="w-1/4">
-                        <PickAndQueue
-                            isDJ={room!.is_dj}
-                            isInQueue={room!.in_queue}
-                            onJoinQueue={(playlistId: string) => {
-                                socket.emit("join queue", { playlistId });
-                            }}
-                        />
+                <div className="flex flex-col flex-grow p-3 pb-5">
+                    {/* All the users in the room */}
+                    <AvatarList currentDj={room.on_deck.current_dj} users={room.users} />
+
+                    {/* DJ & Woot Controls */}
+                    <div className="flex flex-shrink-0 justify-between">
+
+                        {/* DJ Queue and Playlist Select */}
+                        <div className="w-1/3">
+                            <PickAndQueue
+                                isDJ={room!.is_dj}
+                                isInQueue={room!.in_queue}
+                                onJoinQueue={(playlistId: string) => {
+                                    socket.emit("join queue", { playlistId });
+                                }}
+                            />
+                        </div>
+
+                        {/* Current DJ */}
+                        <div className="w-1/3">
+                            {
+                                room.on_deck.current_dj ? <Avatar isDj user={room!.users.find(usr => usr.id === room.on_deck.current_dj)!}/> : null
+                            }
+                        </div>
+
+                        {/* Woot etc. */}
+                        <div className="w-1/3">
+                            <span>Woot!</span>
+                        </div>
                     </div>
-                    {/* Woot etc. */}
-                    <div className="w-1/4">
-                        <span>Woot!</span>
-                    </div>
+
                 </div>
 
             </RoomLayout>

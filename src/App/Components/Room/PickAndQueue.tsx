@@ -24,6 +24,7 @@ export const PickAndQueue: React.FC<{
                     onChange={() => {}}
                     value={""}
                     disabled={true}
+                    above
                     options={[
                         {
                             title: "You don't have any playlists",
@@ -45,6 +46,7 @@ export const PickAndQueue: React.FC<{
             <SelectDropdown
                 onChange={(val: string) => setPlaylistValue(val)}
                 value={playlistValue}
+                above
                 options={playlists!.map((playlist) => ({
                     title: playlist.title,
                     value: playlist.id

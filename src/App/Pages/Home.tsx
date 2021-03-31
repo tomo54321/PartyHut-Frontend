@@ -68,14 +68,14 @@ export const Home = () => {
     return (
         <StandardLayout>
 
-            <PageHeading title="Rooms" />
+            <PageHeading title="Huts" />
 
-            <RoomSection title="Find Rooms" noGrid>
+            <RoomSection title="Find Huts" noGrid>
                 <div className="flex space-x-2">
                     <div className="w-1/4 sm:w-1/2 md:w-3/4 lg:w-full lg:flex-grow">
                         <SearchBar 
                             value={query}
-                            placeholder="Search rooms by name or user"
+                            placeholder="Search huts by name or user"
                             onQueryChange={(text: string) => setQuery(text)}
                             onSubmit={onSearchSubmit}
                         />
@@ -83,7 +83,7 @@ export const Home = () => {
                     <div className="w-1/4 sm:w-1/2 md:w-1/4 lg:w-full lg:max-w-sm">
                         <PrimaryButton 
                             type="button" 
-                            title="Create Room" 
+                            title="Create a Hut" 
                             onClick={() => {
                                 if(isLoggedIn){
                                     setShowCreateRoomModal(true);

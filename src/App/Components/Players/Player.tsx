@@ -31,9 +31,12 @@ export const Player: React.FC<PlayerProps> = ({
         }
 
         const elapsed = Date.now() - startAtSeconds!;
-        const elapsedSec = elapsed / 1000;
+        const elapsedSec = Math.round(elapsed / 1000);
 
-        if(Math.round((player.current as YouTubePlayer).getCurrentTime()) !== Math.round(elapsedSec)){
+        const playerTime = Math.round((player.current as YouTubePlayer).getCurrentTime());
+
+        // Within a 10 second window?
+        if(playerTime > (elapsedSec + 5) || playerTime < (elapsedSec - 5)){
             player.current.seekTo(elapsedSec, "seconds");
         }
 
