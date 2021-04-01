@@ -1,12 +1,13 @@
 import React from "react";
-import { PrimaryButton } from "./Button";
 import { PageHeader } from "./PageHeader";
 
 interface LayoutProps {
     title?: string;
+    RightItem?: React.FC
 }
 export const Layout: React.FC<LayoutProps> = ({
     title,
+    RightItem,
     children
 }) => (
     <div className="p-5 lg:py-7">
@@ -14,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({
             title ?
                 <PageHeader 
                     title={title} 
-                    RightItem={() => <PrimaryButton title="Create Hut" />}
+                    RightItem={RightItem}
                 />
             : null
         }
