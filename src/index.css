@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    .vol::-webkit-slider-thumb {
+        width: 15px;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 15px;
+        cursor: ew-resize;
+        background: transparent;
+        box-shadow: -405px 0 0 400px #fff;
+        border-radius: 50%;
+        
+    }
+
+    .vol:hover::-webkit-slider-thumb{
+        background: #fff;
+        box-shadow: -405px 0 0 400px #6366f1;
+    }
+}

@@ -1,36 +1,21 @@
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
-import { AppContainer } from './Components/AppContainer';
-import { AuthRoute } from './Components/AuthRoute';
-import { NavBar } from './Components/NavBar';
-import { Home } from './Pages/Home';
-import { Music } from './Pages/Music';
-import { AllPlaylists } from './Pages/Playlist/All';
-import { ShowPlaylist } from  './Pages/Playlist/Show';
-import { AuthPopup } from './Pages/Popups/Auth/Popup';
-import { Room } from './Pages/Room';
+import { BottomPlayer } from "./components/BottomPlayer"
+import { NavBar } from "./components/NavBar"
+import { PageWrapper } from "./components/PageWrapper"
 
-const App: React.FC<{}> = () => {
+interface AppProps {};
+export const App: React.FC<AppProps> = () => {
 
-	return (
-		<AppContainer>
-			<div className="sm:flex h-screen w-screen">
-				<NavBar />
-				<div className="max-w-full sm:h-full sm:w-full sm:overflow-y-auto">
-					<Switch>
-						<Route path="/" exact component={Home} />
-						<AuthRoute path="/room/:roomId" exact component={Room} />
+    return (
+        <PageWrapper>
+            <NavBar />
+            {/* The main content */}
+            <div className="flex flex-col flex-grow">
+                <div className="flex-grow">
 
-						<AuthRoute path="/music" exact component={Music} />
-						
-						<AuthRoute path="/playlists" exact component={AllPlaylists} />
-						<AuthRoute path="/playlist/:playlistId" exact component={ShowPlaylist} />
-					</Switch>
-				</div>
-				<AuthPopup />
-			</div>
-		</AppContainer>
-	)
+                </div>
+                <BottomPlayer />
+            </div>
+        </PageWrapper>
+    );
 
 };
-export default App;
