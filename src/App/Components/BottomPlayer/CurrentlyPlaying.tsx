@@ -10,7 +10,7 @@ export const BottomPlayerCurrentlyPlaying: React.FC<CurrentlyPlayingProps> = ({
     djUsername,
     artwork,
 }) => (
-    <div className="flex items-center space-x-2">
+    <div className="hidden sm:flex items-center space-x-2">
         <BottomPlayerArtwork path={artwork} alt={currentSong} />
         <div>
             <span className="block font-medium truncate w-28 md:w-36 lg:w-40 xl:w-44">{currentSong}</span>

@@ -12,7 +12,7 @@ export const App: React.FC<AppProps> = () => {
             <NavBar />
             {/* The main content */}
             <div className="flex flex-col flex-grow">
-                <div className="flex-grow">
+                <div className="flex-grow h-16 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-700">
                     <HutsPage />
                 </div>
                 <BottomPlayer />
