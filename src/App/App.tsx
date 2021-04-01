@@ -1,4 +1,5 @@
 import { BottomPlayer } from "./components/BottomPlayer"
+import { ChatBox } from "./components/ChatBox"
 import { NavBar } from "./components/NavBar"
 import { PageWrapper } from "./components/PageWrapper"
 import { HutsPage } from "./pages/Huts"
@@ -16,6 +17,7 @@ export const App: React.FC<AppProps> = () => {
                 </div>
                 <BottomPlayer />
             </div>
+            <ChatBox />
         </PageWrapper>
     );
 

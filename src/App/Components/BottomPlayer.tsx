@@ -17,7 +17,7 @@ export const BottomPlayer: React.FC<BottomPlayerProps> = () => {
     const [currentVolume, setVolume] = useState(0);
 
     return (
-        <div className="flex justify-between space-x-4 md:space-x-7 lg:space-x-10 items-center bg-gray-800 border-t border-gray-700 py-4 px-3 h-20">
+        <div className="flex justify-between space-x-3 md:space-x-3 lg:space-x-5 xl:space-x-7 items-center bg-gray-800 border-t border-gray-700 py-4 px-3 h-20">
             <BottomPlayerCurrentlyPlaying 
                 currentSong={currentSong}
                 djUsername={djUsername}

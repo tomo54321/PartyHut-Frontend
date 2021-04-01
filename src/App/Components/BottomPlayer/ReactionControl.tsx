@@ -7,7 +7,7 @@ interface ReactionControlProps {
 export const BottomPlayerReactionControl: React.FC<ReactionControlProps> = ({
     reaction
 }) => (
-    <div className="flex space-x-2 lg:space-x-5">
+    <div className="flex space-x-2 xl:space-x-5">
         <ReactionControlButton 
             Icon={Heart}
             activeClass="text-pink-500"
