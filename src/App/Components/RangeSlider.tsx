@@ -1,4 +1,4 @@
-import Slider, { Handle, SliderTooltip } from 'rc-slider';
+import Slider from 'rc-slider';
 
 interface RangeSliderProps {
     value: number;

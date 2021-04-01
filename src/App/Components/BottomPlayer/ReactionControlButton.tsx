@@ -19,7 +19,7 @@ export const ReactionControlButton: React.FC<ReactionControlButtonProps> = ({
     <button
         onClick={onClick}
         title={title}
-        className={isActive ? activeClass : "text-white"}
+        className={(isActive ? activeClass : "text-white") + " focus:outline-none"}
     >
         <Icon />
     </button>
