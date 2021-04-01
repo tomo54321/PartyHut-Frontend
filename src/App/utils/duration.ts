@@ -8,9 +8,7 @@ export const secondsToReadableTime = (d: number) => {
     if(h > 0){
         output += ('0' + h).slice(-2) + ":";
     }
-    if(m > 0 || h > 0){
-        output += ('0' + m).slice(-2) + ":";
-    }
+    output += ('0' + m).slice(-2) + ":";
     output += ('0' + s).slice(-2);
 
     return output;

@@ -11,9 +11,9 @@ export const BottomPlayerDuration: React.FC<BottomPlayerDurationProps> = ({
 }) => (
     <div className="hidden sm:block flex-grow">
         <RangeSlider 
-            value={Math.round((currentTime / totalTime) * 100)}
+            value={(currentTime / totalTime)}
         />
-        <div className="flex justify-between text-white">
+        <div className="flex justify-between text-white text-sm mt-2">
             <span className="opacity-50 hover:opacity-100 transition duration-75">{secondsToReadableTime(currentTime)}</span>
             <span className="opacity-50 hover:opacity-100 transition duration-75">{secondsToReadableTime(totalTime)}</span>
         </div>
