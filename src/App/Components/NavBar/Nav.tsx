@@ -1,4 +1,4 @@
-import { Disc, Home, List, Music } from "react-feather";
+import { Disc, Home, List, Music, Settings } from "react-feather";
 import { NavLink } from "./NavLink";
 
 interface NavProps {
@@ -30,6 +30,13 @@ export const Nav: React.FC<NavProps> = ({
                     to="/playlists"
                     title="Playlists"
                     Icon={List}
+                />
+            </li>
+            <li>
+                <NavLink
+                    to="/settings"
+                    title="Settings"
+                    Icon={Settings}
                 />
             </li>
         </ul>
