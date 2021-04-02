@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { PrimaryButton } from "../components/Button";
-import { HutCard } from "../components/HutCard";
+import { Card } from "../components/Card";
+import { CardGrid } from "../components/CardGrid";
 import { Layout } from "../components/Layout";
 import { CreateHutModal } from "../components/Modals/CreateHut";
 import { SearchInput } from "../components/SearchInput";
@@ -28,21 +29,14 @@ export const HutsPage: React.FC<HutsPageProps> = () => {
                     placeholder="Search Users, Huts and Songs" />
             </TabBar>
 
-            <div className="mt-5 grid gap-5 grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
-                <HutCard
-                    hut={{
-                        id: "abcd",
-                        name: "The Hut",
-                        thumbnail: "http://placehold.it/1080x720",
-                        host: {
-                            username: "tomo54321"
-                        },
-                        song: {
-                            name: "Koven - Numb [Monstercat Release]"
-                        }
-                    }}
+            <CardGrid>
+                <Card 
+                    image={"http://placehold.it/1080x720"}
+                    title={"The Hut"}
+                    link={`/room/abcd`}
+                    subtitle="Listening to Koven - Numb [Monstercat Release]"
                 />
-            </div>
+            </CardGrid>
             
             {
                 showCreateHutModal ? 

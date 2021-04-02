@@ -3,6 +3,7 @@ import { Layout } from "../components/Layout";
 import { AddToPlaylistModal } from "../components/Modals/AddToPlaylist";
 import { SearchInput } from "../components/SearchInput";
 import { SelectField } from "../components/SelectField";
+import { SongList } from "../components/SongList";
 import { SongRow } from "../components/SongRow";
 import { Song } from "../types/Song";
 
@@ -48,14 +49,14 @@ export const MusicPage: React.FC<MusicPageProps> = () => {
                 />
             </div>
 
-            <div className="mt-5 space-y-5">
+            <SongList>
                 <SongRow
                     {...songs[0]}
                     onSelect={() => {
                         setShowAddToPlaylist(true)
                     }}
                 />
-            </div>
+            </SongList>
 
 
             { showAddToPlaylist ? <AddToPlaylistModal song={songs[0]} onClose={() => setShowAddToPlaylist(false)} /> : null}

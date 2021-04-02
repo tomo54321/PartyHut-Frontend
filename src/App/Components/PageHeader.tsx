@@ -9,7 +9,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
     RightItem
 }) => (
     <div className="flex justify-between items-center mb-5 md:mb-10">
-        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold">{title}</h1>
+        <h1 className="text-2xl sm:text-4xl lg:text-5xl font-bold truncate">{title}</h1>
         {
             RightItem ? <RightItem /> : null
         }
