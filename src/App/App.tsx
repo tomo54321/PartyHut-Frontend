@@ -3,6 +3,7 @@ import { PageWrapper } from "./components/PageWrapper"
 import { AllPlaylistsPage } from "./pages/AllPlaylists";
 import { HutsPage } from "./pages/Huts"
 import { MusicPage } from "./pages/Music";
+import { Room } from "./pages/Room";
 import { SinglePlaylistPage } from "./pages/SinglePlaylist";
 
 interface AppProps {};
@@ -14,6 +15,7 @@ export const App: React.FC<AppProps> = () => {
             <Route path="/music" exact component={MusicPage} />
             <Route path="/playlists" exact component={AllPlaylistsPage} />
             <Route path="/playlist/:playlistId" exact component={SinglePlaylistPage} />
+            <Route path="/room/:roomId" exact component={Room} />
         </PageWrapper>
     );
 

@@ -1,6 +1,7 @@
 import { BottomPlayer } from "./BottomPlayer";
 import { ChatBox } from "./ChatBox";
 import { NavBar } from "./NavBar";
+import { Player } from "./Player";
 
 interface PageWrapperProps { }
 export const PageWrapper: React.FC<PageWrapperProps> = ({
@@ -11,7 +12,8 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
         
         {/* The main content */}
         <div className="flex flex-col flex-grow">
-            <div className="flex-grow h-16 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-700">
+            <div className="relative flex-grow h-16 overflow-hidden overflow-y-auto scrollbar-thin scrollbar-track-gray-800 scrollbar-thumb-gray-700">
+                <Player />
                 {children}
             </div>
             <BottomPlayer />

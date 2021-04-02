@@ -8,6 +8,7 @@ interface TextInputGroupProps {
     placeholder?: string;
     required?: boolean;
     disabled?: boolean;
+    readOnly?: boolean;
 }
 export const TextInputGroup: React.FC<TextInputGroupProps> = ({
     type,

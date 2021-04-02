@@ -20,8 +20,8 @@ export const Modal: React.FC<ModalProps> = ({
 
     return (
         <>
-            <div className="fixed z-10 top-0 left-0 h-full w-full bg-black bg-opacity-75" />
-            <div className={`fixed z-20 m-auto top-10 left-0 right-0 w-3/4 max-w-md bg-gray-800 rounded-md transition duration-300 transform ${show ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}>
+            <div className="fixed z-30 top-0 left-0 h-full w-full bg-black bg-opacity-75" />
+            <div className={`fixed z-40 m-auto top-10 left-0 right-0 w-3/4 max-w-md bg-gray-800 rounded-md transition duration-300 transform ${show ? "scale-100 opacity-100" : "scale-50 opacity-0"}`}>
                 <ModalHeader title={title} onClose={onClose} />
                 <div className="p-4">
                     {children}
