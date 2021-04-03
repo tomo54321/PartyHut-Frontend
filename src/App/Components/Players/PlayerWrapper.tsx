@@ -9,6 +9,7 @@ export interface PlayerWrapperProps {
     platformId?: string;
     songStartedAt?: number;
     onEnded: Function;
+    onDuration: Function;
     volume: number;
     platform?: "YouTube" | "SoundCloud"
 }
@@ -17,6 +18,7 @@ export const PlayerWrapper: React.FC<PlayerWrapperProps> = ({
     platformId,
     songStartedAt,
     onEnded,
+    onDuration,
     volume,
     platform
 }) => {
@@ -56,6 +58,7 @@ export const PlayerWrapper: React.FC<PlayerWrapperProps> = ({
                             playerRef={player}
                             id={platformId!}
                             onEnded={onEnded}
+                            onDuration={onDuration}
                             volume={volume}
                             onReady={playerCatchup}
                             onPlay={playerCatchup}
@@ -68,7 +71,10 @@ export const PlayerWrapper: React.FC<PlayerWrapperProps> = ({
                             volume={volume}
                             onReady={playerCatchup}
                             onPlay={playerCatchup}
-                            onDuration={playerCatchup}
+                            onDuration={(data: any) => {
+                                onDuration(data);
+                                playerCatchup()
+                            }}
                         />
             }
         </div>
