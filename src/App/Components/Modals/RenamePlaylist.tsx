@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Error } from "../../types/Error";
 import { PrimaryButton, SecondaryButton } from "../Button";
+import { Form } from "../Form";
 import { Modal } from "../Modal";
 import { TextInputGroup } from "../TextInputGroup";
 
@@ -15,20 +17,14 @@ export const RenamePlaylistModal: React.FC<RenamePlaylistModalProps> = ({
 }) => {
 
     const [name, setName] = useState(playlistName);
+    const [errors, setErrors] = useState([] as Error[]);
 
     return (
         <Modal
             title="Rename Playlist"
             onClose={onClose}
         >
-            <form
-                action=""
-                method="POST"
-                className="space-y-5"
-                onSubmit={e => {
-                    e.preventDefault();
-                }}
-            >
+            <Form errors={errors} onSubmit={() => {}}>
                 <TextInputGroup
                     title="Playlist Name"
                     placeholder="My Party Beats"
@@ -40,7 +36,7 @@ export const RenamePlaylistModal: React.FC<RenamePlaylistModalProps> = ({
                     <SecondaryButton className="block w-full" title="Cancel" onClick={() => onClose()} />
                     <PrimaryButton type="submit" className="block w-full" title="Rename Playlist" />
                 </div>
-            </form>
+            </Form>
         </Modal>
     )
 };
