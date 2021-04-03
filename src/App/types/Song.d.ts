@@ -1,9 +1,9 @@
 export interface Song {
     id: string;
     title: string;
-    postedBy: string;
+    artist: string;
     platform: "YouTube" | "SoundCloud";
-    thumbnailUrl: string;
+    artwork: string;
     platformId: string;
     duration: number;
 }
