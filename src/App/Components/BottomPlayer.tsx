@@ -19,7 +19,7 @@ export const BottomPlayer: React.FC<BottomPlayerProps> = () => {
         return null;
     }
     
-    const currentReaction = "love";
+    // const currentReaction = "love";
     const playingPlayer = (player as PlayerPlayingState);
 
     return (
@@ -33,7 +33,7 @@ export const BottomPlayer: React.FC<BottomPlayerProps> = () => {
                 currentTime={playingPlayer.current_time}
                 totalTime={playingPlayer.song.duration}
             />
-            <BottomPlayerReactionControl reaction={currentReaction} />
+            {/* <BottomPlayerReactionControl reaction={currentReaction} /> */}
             <BottomPlayerVolume 
                 value={player.volume}
                 onChange={(vol: number) => dispatch(setPlayerVolume(vol))}

@@ -1,4 +1,4 @@
-import { Disc, Home, List, Music, Settings } from "react-feather";
+import { Disc, Home, List, Lock, Music, Settings, User } from "react-feather";
 import { NavLink } from "./NavLink";
 
 interface NavProps {
@@ -34,11 +34,25 @@ export const Nav: React.FC<NavProps> = ({
             </li>
             <li>
                 <NavLink
+                    to="/login"
+                    title="Login"
+                    Icon={Lock}
+                />
+            </li>
+            <li>
+                <NavLink
+                    to="/signup"
+                    title="Sign Up"
+                    Icon={User}
+                />
+            </li>
+            {/* <li>
+                <NavLink
                     to="/settings"
                     title="Settings"
                     Icon={Settings}
                 />
-            </li>
+            </li> */}
         </ul>
 
         <ul className="space-y-2 max-h-24 overflow-auto md:max-h-60 scrollbar scrollbar-thumb-gray-700 scrollbar-thin scrollbar-track-gray-900">
