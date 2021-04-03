@@ -22,9 +22,9 @@ export const SinglePlaylistPage: React.FC<SinglePlaylistPageProps> = () => {
         songs: [{
             id: "abcd",
             title: "Yes",
-            postedBy: "Monstercat",
+            artist: "Monstercat",
             platform: "YouTube",
-            thumbnailUrl: "http://placehold.it/150x150",
+            artwork: "http://placehold.it/150x150",
             platformId: "abcd",
             duration: 158.22
         } as Song]

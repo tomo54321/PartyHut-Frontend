@@ -27,7 +27,7 @@ export const BottomPlayer: React.FC<BottomPlayerProps> = () => {
             <BottomPlayerCurrentlyPlaying 
                 currentSong={playingPlayer.song.title}
                 djUsername={playingPlayer.dj}
-                artwork={playingPlayer.song.thumbnailUrl}
+                artwork={playingPlayer.song.artwork}
             />
             <BottomPlayerDuration 
                 currentTime={playingPlayer.current_time}

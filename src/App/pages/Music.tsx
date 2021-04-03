@@ -16,10 +16,10 @@ export const MusicPage: React.FC<MusicPageProps> = () => {
         {
             id: "abc",
             title: "Koven - Numb [Monstercat Release]",
-            postedBy: "Monstercat Uncaged",
+            artist: "Monstercat Uncaged",
             platform: platform,
             platformId: "ABCD",
-            thumbnailUrl: "http://placehold.it/150x150",
+            artwork: "http://placehold.it/150x150",
             duration: 185.6
         }
     ] as Song[]);
