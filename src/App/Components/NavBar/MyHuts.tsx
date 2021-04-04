@@ -12,11 +12,11 @@ export const MyHuts: React.FC<MyHutsProps> = () => {
     if (!isLoggedIn) { return null; }
     
 
-    const huts = userHuts.map((_: any, index: number) => (
+    const huts = userHuts.map((hut, index) => (
         <li key={"hut-" + index}>
             <NavLink
-                to={"/room/abcd"}
-                title="The Hut"
+                to={`/room/${hut.id}`}
+                title={hut.name}
                 Icon={Disc}
             />
         </li>

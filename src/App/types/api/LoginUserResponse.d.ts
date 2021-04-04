@@ -1,7 +1,9 @@
+import { SimpleRoomResponse } from "./SimpleRoomResponse";
+
 export interface LoginUserResponse {
     id: string;
     username: string;
     avatar: string;
-    huts: Array;
+    huts: SimpleRoomResponse[];
     created_at: Date;
 }

@@ -20,7 +20,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     const [query, setQuery] = useState("");
 
     return (
-        <div className={`flex w-full${className ? " " + className : ""}`}>
+        <form 
+        onSubmit={e => {
+            onSearch(query);
+            e.preventDefault();
+        }}
+        className={`flex w-full${className ? " " + className : ""}`}>
             <TextInput 
                 value={query}
                 placeholder={placeholder}
@@ -29,7 +34,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                 onChange={e => setQuery((e.target as HTMLInputElement).value)}
             />
             <button 
-                type="button"
+                type="submit"
                 className="block px-3 bg-gray-800 hover:bg-gray-700 border border-gray-700 border-l-0 rounded-r-md text-gray-300 hover:text-white transition duration-75 focus:outline-none"
             >
                 {
@@ -39,6 +44,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
                     <Search size={20}/>
                 }
             </button>
-        </div>
+        </form>
     );
 };

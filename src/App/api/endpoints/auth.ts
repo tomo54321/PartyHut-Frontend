@@ -66,3 +66,27 @@ export const login = (
         }
     });
 };
+
+export const checkStatus = (): Promise<LoginUserResponse | null> => {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            const { data } = await api.get("/auth/me");
+
+            resolve(data.user || null);
+        } catch (e) {
+            if(!axios.isCancel(e)){
+                if(e.response) {
+                    reject(e.response.data as PartyHutAPI.ErrorResponse);
+                } else {
+                    reject({
+                        errors: [{
+                            param: "local",
+                            msg: "Failed to connect, please check your internet connection."
+                        }]
+                    } as PartyHutAPI.ErrorResponse)
+                }
+            }
+        }
+    });
+};
