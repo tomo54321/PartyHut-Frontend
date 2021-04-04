@@ -21,6 +21,8 @@ export const MusicPage: React.FC<MusicPageProps> = () => {
     const [loading, setLoading] = useState(false);
     const cancelToken = useRef(axios.CancelToken.source());
 
+    const songIndex = useRef(0);
+
     const onSearch = useCallback(async (query: string) => {
         cancelToken.current = axios.CancelToken.source();
         setLoading(true);
@@ -85,6 +87,7 @@ export const MusicPage: React.FC<MusicPageProps> = () => {
                             key={`song-${index}-${song.id}`}
                             {...song}
                             onSelect={() => {
+                                songIndex.current = index;
                                 setShowAddToPlaylist(true)
                             }}
                         />
@@ -93,7 +96,7 @@ export const MusicPage: React.FC<MusicPageProps> = () => {
             </SongList>
 
 
-            { showAddToPlaylist && !loading ? <AddToPlaylistModal song={songs[0]} onClose={() => setShowAddToPlaylist(false)} /> : null}
+            { showAddToPlaylist && !loading ? <AddToPlaylistModal song={songs[songIndex.current]} onClose={() => setShowAddToPlaylist(false)} /> : null}
         </Layout>
     );
 };

@@ -42,6 +42,6 @@ export const PlayerReducer = (
             return oldTimeState;
 
         default:
-            return initialPlayerState;
+            return state;
     }
 }

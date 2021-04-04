@@ -7,7 +7,6 @@ interface AuthLinksProps { }
 export const AuthLinks: React.FC<AuthLinksProps> = () => {
 
     const isLoggedIn = useSelector((state: ApplicationState) => state.user.logged_in);
-
     if (isLoggedIn) {
         return (
             <>

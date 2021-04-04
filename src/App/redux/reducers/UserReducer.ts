@@ -19,6 +19,6 @@ export const UserReducer = (
         case SET_LOGOUT:
             return payload;
         default:
-            return initialUserState;
+            return state;
     }
 }

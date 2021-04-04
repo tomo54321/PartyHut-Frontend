@@ -1,7 +1,8 @@
 import axios from "axios";
-import { signup, login, checkStatus } from './endpoints/auth';
-import { get as getRooms, create as createRoom } from './endpoints/room';
-import { searchYouTube, searchSoundCloud } from './endpoints/external';
+import * as auth from './endpoints/auth';
+import * as rooms from './endpoints/room';
+import * as playlist from './endpoints/playlist';
+import * as external from './endpoints/external';
 
 export const api = axios.create({
     baseURL: "http://localhost:4000",
@@ -16,17 +17,8 @@ export const SoundCloudAPI = axios.create({
 })
 
 export const PartyHut = {
-    auth: {
-        signup,
-        login,
-        checkStatus
-    },
-    rooms: {
-        get: getRooms,
-        create: createRoom
-    },
-    external: {
-        searchYouTube,
-        searchSoundCloud
-    }
-}
+    auth,
+    rooms,
+    playlist,
+    external
+};

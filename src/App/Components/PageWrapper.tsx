@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { PartyHut } from "../api/api";
 import { AppLoading } from "../pages/AppLoading";
+import { setPlaylists } from "../redux/actions/PlaylistActions";
 import { setUserState } from "../redux/actions/UserActions";
+import { ErrorResponse } from "../types/Error";
 import { BottomPlayer } from "./BottomPlayer";
 import { ChatBox } from "./ChatBox";
 import { NavBar } from "./NavBar";
@@ -16,23 +19,37 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({
     const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
 
+    const fetchPlaylists = useCallback(async () => {
+        try {
+            const playlists = await PartyHut.playlist.all(axios.CancelToken.source().token);
+            dispatch(setPlaylists({
+                updated_at: Date.now(),
+                playlists
+            }))
+        } catch (e) {
+            const error = e as ErrorResponse;
+            console.log("Couldn't fetch playlists | Response:", error.errors[0].msg);
+        }
+    }, [dispatch]);
+
     useEffect(() => {
         PartyHut.auth.checkStatus()
             .then(data => {
-                if(data !== null){
+                if (data !== null) {
                     dispatch(setUserState({
                         logged_in: true,
                         user: data
                     }));
+                    fetchPlaylists();
                 }
                 setIsLoading(false);
             })
             .catch(() => {
                 setIsLoading(false);
             })
-    }, [dispatch]);
+    }, [dispatch, fetchPlaylists]);
 
-    if(isLoading){
+    if (isLoading) {
         return <AppLoading />;
     }
 
