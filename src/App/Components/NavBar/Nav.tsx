@@ -1,4 +1,6 @@
-import { Disc, Home, List, Lock, Music, Settings, User } from "react-feather";
+import { Home} from "react-feather";
+import { AuthLinks } from "./AuthLinks";
+import { MyHuts } from "./MyHuts";
 import { NavLink } from "./NavLink";
 
 interface NavProps {
@@ -18,52 +20,9 @@ export const Nav: React.FC<NavProps> = ({
                     Icon={Home}
                 />
             </li>
-            <li>
-                <NavLink
-                    to="/music"
-                    title="Music"
-                    Icon={Music}
-                />
-            </li>
-            <li>
-                <NavLink
-                    to="/playlists"
-                    title="Playlists"
-                    Icon={List}
-                />
-            </li>
-            <li>
-                <NavLink
-                    to="/login"
-                    title="Login"
-                    Icon={Lock}
-                />
-            </li>
-            <li>
-                <NavLink
-                    to="/signup"
-                    title="Sign Up"
-                    Icon={User}
-                />
-            </li>
-            {/* <li>
-                <NavLink
-                    to="/settings"
-                    title="Settings"
-                    Icon={Settings}
-                />
-            </li> */}
+            <AuthLinks />
         </ul>
 
-        <ul className="space-y-2 max-h-24 overflow-auto md:max-h-60 scrollbar scrollbar-thumb-gray-700 scrollbar-thin scrollbar-track-gray-900">
-            <li className="sticky top-0 bg-gray-800 uppercase font-medium text-sm text-gray-400">My Huts</li>
-            <li>
-                <NavLink
-                    to={"/room/abcd"}
-                    title="The Hut" 
-                    Icon={Disc}
-                />
-            </li>
-        </ul>
+        <MyHuts />
     </div>
 );

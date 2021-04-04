@@ -26,6 +26,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = () => {
 
     const onFormSubmit = useCallback(async () => {
         setLoading(true);
+        setErrors([]);
         cancelToken.current = axios.CancelToken.source();
         
         try {

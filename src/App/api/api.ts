@@ -1,5 +1,5 @@
 import axios from "axios";
-import { signup } from './endpoints/auth';
+import { signup, login } from './endpoints/auth';
 
 export const api = axios.create({
     baseURL: "http://localhost:4000",
@@ -8,6 +8,7 @@ export const api = axios.create({
 
 export const PartyHut = {
     auth: {
-        signup
+        signup,
+        login
     }
 }
