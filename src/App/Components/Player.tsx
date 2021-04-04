@@ -31,7 +31,7 @@ export const Player: React.FC<PlayerProps> = () => {
                 <PlayerWrapper
                     isPlaying={playerState.playing}
                     platform={playerState.playing ? playingPlayerState.song.platform : undefined}
-                    platformId={playerState.playing ? playingPlayerState.song.platformId : undefined}
+                    platformId={playerState.playing ? playingPlayerState.song.platform_id : undefined}
                     songStartedAt={playerState.playing ? playingPlayerState.song_start_time : undefined}
                     onEnded={() => { }}
                     onDuration={updatePlayerTime}

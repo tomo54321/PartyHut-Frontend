@@ -3,7 +3,8 @@ export interface Song {
     title: string;
     artist: string;
     platform: "YouTube" | "SoundCloud";
+    platform_url?: string;
     artwork: string;
-    platformId: string;
+    platform_id: string;
     duration: number;
 }

@@ -11,7 +11,8 @@ export const SongRow: React.FC<SongRowProps> = ({
     artist,
     duration,
     platform,
-    platformId,
+    platform_id,
+    platform_url,
     artwork,
     onSelect,
     Button
@@ -23,9 +24,15 @@ export const SongRow: React.FC<SongRowProps> = ({
             <span className="block truncate md:max-w-xs lg:max-w-md xl:max-w-lg 2xl:max-w-none opacity-75">{artist}</span>
             
             <div className="block text-sm opacity-60">
-                <span>{secondsToReadableTime(duration)}</span>
-                {' '}&bull;{' '}
-                <a href={`https://youtube.com/watch?v=${platformId}`} target="_blank" rel="noreferrer" className="hover:underline">Preview on {platform}</a>
+                {
+                    typeof duration === "number" ?
+                    <>
+                    <span>{secondsToReadableTime(duration)}</span>
+                    {' '}&bull;{' '}
+                    </>
+                    : null
+                }
+                <a href={platform_url ? platform_url : `https://youtube.com/watch?v=${platform_id}`} target="_blank" rel="noreferrer" className="hover:underline">Preview on {platform}</a>
             </div>
         </div>
         {

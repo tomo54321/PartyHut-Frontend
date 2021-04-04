@@ -25,7 +25,7 @@ export const SinglePlaylistPage: React.FC<SinglePlaylistPageProps> = () => {
             artist: "Monstercat",
             platform: "YouTube",
             artwork: "http://placehold.it/150x150",
-            platformId: "abcd",
+            platform_id: "abcd",
             duration: 158.22
         } as Song]
     });
