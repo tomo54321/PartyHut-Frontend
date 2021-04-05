@@ -37,6 +37,7 @@ export const Room: React.FC<RoomProps> = () => {
         }
     }, [currentRoom, match.params]);
 
+    // Todo add room connecting
     if(!currentRoom.connected){ return null; }
 
     return (
@@ -94,7 +95,7 @@ export const Room: React.FC<RoomProps> = () => {
                 : null}
             { showRoomDeleteModal ? <RoomDeleteModal onDelete={() => { }} onClose={() => setShowRoomDeleteModal(false)} /> : null}
             {showShareModal ? <RoomShareModal onClose={() => setShowShareModal(open => !open)} /> : null}
-            {showJoinDJQueueModal ? <JoinDjQueuePlaylist onClose={() => setShowJoinDJQueueModal(open => !open)} /> : null}
+            {showJoinDJQueueModal && !currentRoom.room!.is_dj && !currentRoom.room!.in_queue ? <JoinDjQueuePlaylist onClose={() => setShowJoinDJQueueModal(open => !open)} /> : null}
         </div>
     );
 
