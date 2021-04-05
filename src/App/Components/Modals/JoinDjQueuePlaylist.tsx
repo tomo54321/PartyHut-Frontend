@@ -15,7 +15,7 @@ export const JoinDjQueuePlaylist: React.FC<JoinDjQueuePlaylistProps> = ({
 }) => {
 
     const playlists = useSelector((state: ApplicationState) => state.playlist.playlists);
-    const [selectedPlaylist, setSelected] = useState(playlists[0].id);
+    const [selectedPlaylist, setSelected] = useState(playlists[0]?.id || "");
     
     const onJoinDJQueue = useCallback(() => {
         socketAPI.emit("join queue", { playlistId: selectedPlaylist });

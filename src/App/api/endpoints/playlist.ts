@@ -1,7 +1,6 @@
 import axios, { CancelToken } from "axios";
 import { PartyHutAPI } from "../../types/api/ErrorResponse";
 import { PlaylistResponse, SimplePlaylistResponse } from "../../types/api/PlaylistResponse";
-import { Song } from "../../types/Song";
 import { api } from "../api";
 
 export const all = (

@@ -1,5 +1,6 @@
 import { MutableRefObject, useCallback, useRef } from "react";
 import ReactPlayer from "react-player";
+import { socketAPI } from "../../api/socketapi";
 import { NothingPlayer } from "./Nothing";
 import { SCPlayer } from "./SoundCloud"
 import { YTPlayer } from "./YouTube"
@@ -10,6 +11,7 @@ export interface PlayerWrapperProps {
     songStartedAt?: number;
     onEnded: Function;
     onDuration: Function;
+    onError: Function;
     volume: number;
     platform?: "YouTube" | "SoundCloud"
 }
@@ -18,6 +20,7 @@ export const PlayerWrapper: React.FC<PlayerWrapperProps> = ({
     platformId,
     songStartedAt,
     onEnded,
+    onError,
     onDuration,
     volume,
     platform
@@ -62,6 +65,7 @@ export const PlayerWrapper: React.FC<PlayerWrapperProps> = ({
                             volume={volume}
                             onReady={playerCatchup}
                             onPlay={playerCatchup}
+                            onError={onError}
                         />
                         :
                         <SCPlayer
@@ -71,6 +75,7 @@ export const PlayerWrapper: React.FC<PlayerWrapperProps> = ({
                             volume={volume}
                             onReady={playerCatchup}
                             onPlay={playerCatchup}
+                            onError={onError}
                             onDuration={(data: any) => {
                                 onDuration(data);
                                 playerCatchup()

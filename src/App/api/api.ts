@@ -1,5 +1,4 @@
 import axios from "axios";
-import io from 'socket.io-client';
 import * as auth from './endpoints/auth';
 import * as rooms from './endpoints/room';
 import * as playlist from './endpoints/playlist';

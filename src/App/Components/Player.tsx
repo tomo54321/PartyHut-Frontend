@@ -26,6 +26,14 @@ export const Player: React.FC<PlayerProps> = () => {
         }
     }, [isDJ]);
     
+
+    // If the player can't play we'll emit a skip event.
+    const playerHasError = useCallback(() => {
+        setTimeout(() => {
+            socketAPI.emit("next song");
+        }, 10000);
+    }, []);
+
     const playingPlayerState = (playerState as PlayerPlayingState);
     
     return (
@@ -43,6 +51,7 @@ export const Player: React.FC<PlayerProps> = () => {
                     songStartedAt={playerState.playing ? playingPlayerState.song_start_time : undefined}
                     onEnded={playerEnded}
                     onDuration={updatePlayerTime}
+                    onError={playerHasError}
                     volume={playerState.volume}
                 />
             </div>

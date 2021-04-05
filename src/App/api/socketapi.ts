@@ -16,6 +16,8 @@ export const socketAPI = io("192.168.68.134:4001", {
 (window as any).sockt = socketAPI;
 
 socketAPI.on("joined room", (room: FullRoomResponse) => {
+    const volume = ApplicationStore.getState().player.volume;
+
     // Set the room
     ApplicationStore.dispatch(onJoinRoom({
         connected: true,
@@ -33,12 +35,12 @@ socketAPI.on("joined room", (room: FullRoomResponse) => {
             playing: true,
             current_time: (Date.now() - start_time/ 1000),
             song_start_time: start_time,
-            volume: 0
+            volume
         }))
     } else {
         ApplicationStore.dispatch(setPlayerNotPlaying({
             playing: false,
-            volume: 0
+            volume
         }));
     }
 });
@@ -108,6 +110,7 @@ socketAPI.on("no longer dj", () => {
 socketAPI.on("deck change", (deck: RoomDeckChange) => {
     const room = ApplicationStore.getState().room.room!;
     room.on_deck = deck;
+    const volume = ApplicationStore.getState().player.volume;
     
     ApplicationStore.dispatch(onJoinRoom({
         connecting: false,
@@ -126,13 +129,13 @@ socketAPI.on("deck change", (deck: RoomDeckChange) => {
             playing: true,
             current_time: (Date.now() - start_time/ 1000),
             song_start_time: start_time,
-            volume: 0
+            volume
         }))
 
     } else {
         ApplicationStore.dispatch(setPlayerNotPlaying({
             playing: false,
-            volume: 0
+            volume
         }))
     }
 
