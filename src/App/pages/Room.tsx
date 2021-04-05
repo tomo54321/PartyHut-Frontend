@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useRouteMatch } from "react-router";
 import { socketAPI } from "../api/socketapi";
 import { PrimaryButton } from "../components/Button";
+import { JoinDjQueuePlaylist } from "../components/Modals/JoinDjQueuePlaylist";
 import { RoomDeleteModal } from "../components/Modals/RoomDelete";
 import { RoomInfoModal } from "../components/Modals/RoomInfo";
 import { RoomShareModal } from "../components/Modals/RoomShare";
@@ -18,6 +19,7 @@ export const Room: React.FC<RoomProps> = () => {
 
     const [showRoomInfoModal, setShowRoomInfoModal] = useState(false);
     const [showRoomDeleteModal, setShowRoomDeleteModal] = useState(false);
+    const [showJoinDJQueueModal, setShowJoinDJQueueModal] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
 
     const currentRoom = useSelector((state: ApplicationState) => state.room);
@@ -35,6 +37,8 @@ export const Room: React.FC<RoomProps> = () => {
         }
     }, [currentRoom, match.params]);
 
+    if(!currentRoom.connected){ return null; }
+
     return (
         <div className="relative h-full w-full">
             <RoomHeader
@@ -45,11 +49,13 @@ export const Room: React.FC<RoomProps> = () => {
             <RoomBackgroundImage src="https://cdn.radiant.dj/rcs/bg/16.png" />
             <PlayerOffset />
             <div className="relative mt-5 z-20">
-
+                
+                {/* Current DJ */}
                 <div className="grid grid-cols-3 max-w-xl m-auto items-center">
                     <div>
-                        <PrimaryButton title="Join DJ Queue" />
+                        <PrimaryButton onClick={() => setShowJoinDJQueueModal(true)} title="Join DJ Queue" />
                     </div>
+
                     {
                         currentRoom.room!.on_deck.playing ?
                             <User
@@ -59,8 +65,10 @@ export const Room: React.FC<RoomProps> = () => {
                             />
                             : null
                     }
+
                 </div>
 
+                {/* All Users */}
                 <div className="px-2 py-5 md:px-5 mt-5 overflow-y-auto max-h-full flex space-x-3">
                     {
                         currentRoom.room!.users.map(user => (
@@ -86,6 +94,7 @@ export const Room: React.FC<RoomProps> = () => {
                 : null}
             { showRoomDeleteModal ? <RoomDeleteModal onDelete={() => { }} onClose={() => setShowRoomDeleteModal(false)} /> : null}
             {showShareModal ? <RoomShareModal onClose={() => setShowShareModal(open => !open)} /> : null}
+            {showJoinDJQueueModal ? <JoinDjQueuePlaylist onClose={() => setShowJoinDJQueueModal(open => !open)} /> : null}
         </div>
     );
 
