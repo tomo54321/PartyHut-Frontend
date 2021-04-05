@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
+import { socketAPI } from "../api/socketapi";
 import { setPlayerCurrentTime } from "../redux/actions/PlayerActions";
 import { PlayerPlayingState } from "../redux/reducers/PlayerReducer";
 import { ApplicationState } from "../redux/Store";
@@ -10,6 +11,7 @@ interface PlayerProps { }
 export const Player: React.FC<PlayerProps> = () => {
     const location = useLocation();
     const playerState = useSelector((state: ApplicationState) => state.player);
+    const isDJ = useSelector((state: ApplicationState) => state.room.room?.is_dj || false)
     const dispatch = useDispatch();
 
     const updatePlayerTime = useCallback((progress: any) => {
@@ -17,6 +19,12 @@ export const Player: React.FC<PlayerProps> = () => {
             dispatch(setPlayerCurrentTime(progress.playedSeconds));
         }
     }, [playerState, dispatch]);
+
+    const playerEnded = useCallback(() => {
+        if(isDJ){
+            socketAPI.emit("next song");
+        }
+    }, [isDJ]);
     
     const playingPlayerState = (playerState as PlayerPlayingState);
     
@@ -33,7 +41,7 @@ export const Player: React.FC<PlayerProps> = () => {
                     platform={playerState.playing ? playingPlayerState.song.platform : undefined}
                     platformId={playerState.playing ? playingPlayerState.song.platform_id : undefined}
                     songStartedAt={playerState.playing ? playingPlayerState.song_start_time : undefined}
-                    onEnded={() => { }}
+                    onEnded={playerEnded}
                     onDuration={updatePlayerTime}
                     volume={playerState.volume}
                 />

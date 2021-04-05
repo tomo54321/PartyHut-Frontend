@@ -1,4 +1,5 @@
-import { Song } from "../Song";
+import { RoomDeckChange } from "./RoomDeckChange";
+import { RoomUser } from "./RoomUser";
 
 export interface FullRoomResponse {
     id: string;
@@ -7,19 +8,8 @@ export interface FullRoomResponse {
         id: string;
         username: string;
     },
-    users: {
-        id: string;
-        username: string;
-    }[],
-    on_deck: {
-        playing: boolean;
-        song: Song | null;
-        song_start_time: Date,
-        current_dj: {
-            id: string;
-            username: string;
-        } | null
-    },
+    users: RoomUser[],
+    on_deck: RoomDeckChange,
     is_dj: boolean;
     in_queue: boolean;
 }

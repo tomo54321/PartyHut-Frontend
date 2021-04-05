@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useSelector } from "react-redux"
+import { socketAPI } from "../../api/socketapi";
 import { ApplicationState } from "../../redux/Store";
 import { PrimaryButton, SecondaryButton } from "../Button";
 import { Form } from "../Form";
@@ -15,6 +16,11 @@ export const JoinDjQueuePlaylist: React.FC<JoinDjQueuePlaylistProps> = ({
 
     const playlists = useSelector((state: ApplicationState) => state.playlist.playlists);
     const [selectedPlaylist, setSelected] = useState(playlists[0].id);
+    
+    const onJoinDJQueue = useCallback(() => {
+        socketAPI.emit("join queue", { playlistId: selectedPlaylist });
+        onClose();
+    }, [selectedPlaylist, onClose]);
 
     return (
         <Modal
@@ -38,7 +44,7 @@ export const JoinDjQueuePlaylist: React.FC<JoinDjQueuePlaylistProps> = ({
 
                         <div className="flex space-x-2">
                             <SecondaryButton className="block w-full" title="Cancel" onClick={() => onClose()} />
-                            <PrimaryButton type="submit" className="block w-full" title="Join DJ Queue" />
+                            <PrimaryButton type="submit" className="block w-full" title="Join DJ Queue" onClick={onJoinDJQueue}/>
                         </div>
                     </Form>
             }

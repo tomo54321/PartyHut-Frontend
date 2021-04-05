@@ -40,6 +40,8 @@ export const Room: React.FC<RoomProps> = () => {
     // Todo add room connecting
     if(!currentRoom.connected){ return null; }
 
+    const currentDj = currentRoom.room!.users.find(usr => usr.id === currentRoom.room!.on_deck.current_dj)
+
     return (
         <div className="relative h-full w-full">
             <RoomHeader
@@ -54,13 +56,17 @@ export const Room: React.FC<RoomProps> = () => {
                 {/* Current DJ */}
                 <div className="grid grid-cols-3 max-w-xl m-auto items-center">
                     <div>
-                        <PrimaryButton onClick={() => setShowJoinDJQueueModal(true)} title="Join DJ Queue" />
+                        <PrimaryButton 
+                            onClick={() => setShowJoinDJQueueModal(true)} 
+                            disabled={currentRoom.room!.in_queue || currentRoom.room!.is_dj} 
+                            title={currentRoom.room!.in_queue ? "You're in the Queue" : currentRoom.room!.is_dj ? "You're the DJ" :"Join DJ Queue" }
+                        />
                     </div>
 
                     {
                         currentRoom.room!.on_deck.playing ?
                             <User
-                                username={currentRoom.room!.on_deck.current_dj!.username}
+                                username={currentDj?.username || "User"}
                                 avatar="http://placehold.it/75x75"
                                 isDj
                             />
