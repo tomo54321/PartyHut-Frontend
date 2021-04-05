@@ -1,6 +1,7 @@
 export interface ChatMessage {
+    id: string;
     username: string;
     avatar: string;
-    createdAt: Date;
+    created_at: string;
     message: string;
 }

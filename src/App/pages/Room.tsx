@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useRouteMatch } from "react-router";
+import { socketAPI } from "../api/socketapi";
 import { PrimaryButton } from "../components/Button";
 import { RoomDeleteModal } from "../components/Modals/RoomDelete";
 import { RoomInfoModal } from "../components/Modals/RoomInfo";
@@ -7,6 +10,7 @@ import { PlayerOffset } from "../components/PlayerOffset";
 import { RoomBackgroundImage } from "../components/Room/BackgroundImage"
 import { RoomHeader } from "../components/Room/Header";
 import { User } from "../components/Room/User";
+import { ApplicationState } from "../redux/Store";
 
 interface RoomProps { }
 
@@ -15,6 +19,21 @@ export const Room: React.FC<RoomProps> = () => {
     const [showRoomInfoModal, setShowRoomInfoModal] = useState(false);
     const [showRoomDeleteModal, setShowRoomDeleteModal] = useState(false);
     const [showShareModal, setShowShareModal] = useState(false);
+
+    const currentRoom = useSelector((state: ApplicationState) => state.room);
+    const match = useRouteMatch();
+
+    useEffect(() => {
+        if (
+            (currentRoom.connected && currentRoom.room!.id !== (match.params as any).roomId) // In a room but joined a different one?
+            ||  // Or.....
+            (currentRoom.connected === false && currentRoom.connecting === false) // Not joined any room.
+        ) {
+            socketAPI.disconnect();
+            socketAPI.connect();
+            socketAPI.emit("join room", { id: (match.params as any).roomId });
+        }
+    }, [currentRoom, match.params]);
 
     return (
         <div className="relative h-full w-full">
@@ -31,30 +50,27 @@ export const Room: React.FC<RoomProps> = () => {
                     <div>
                         <PrimaryButton title="Join DJ Queue" />
                     </div>
-                    <User
-                        username="tomo54321"
-                        avatar="http://placehold.it/75x75"
-                        isDj
-                    />
+                    {
+                        currentRoom.room!.on_deck.playing ?
+                            <User
+                                username={currentRoom.room!.on_deck.current_dj!.username}
+                                avatar="http://placehold.it/75x75"
+                                isDj
+                            />
+                            : null
+                    }
                 </div>
 
                 <div className="px-2 py-5 md:px-5 mt-5 overflow-y-auto max-h-full flex space-x-3">
-                    <User
-                        username="tomo54321"
-                        avatar="http://placehold.it/75x75"
-                    />
-                    <User
-                        username="sdfjiosgdfjiogdfiogd"
-                        avatar="http://placehold.it/75x75"
-                    />
-                    <User
-                        username="tomo54321"
-                        avatar="http://placehold.it/75x75"
-                    />
-                    <User
-                        username="tomo54321"
-                        avatar="http://placehold.it/75x75"
-                    />
+                    {
+                        currentRoom.room!.users.map(user => (
+                            <User
+                                key={user.id}
+                                username={user.username}
+                                avatar="http://placehold.it/75x75"
+                            />
+                        ))
+                    }
                 </div>
             </div>
 
@@ -68,7 +84,7 @@ export const Room: React.FC<RoomProps> = () => {
                     onClose={() => setShowRoomInfoModal(open => !open)}
                 />
                 : null}
-            { showRoomDeleteModal ? <RoomDeleteModal onDelete={() => {}} onClose={() => setShowRoomDeleteModal(false)}/> : null}
+            { showRoomDeleteModal ? <RoomDeleteModal onDelete={() => { }} onClose={() => setShowRoomDeleteModal(false)} /> : null}
             {showShareModal ? <RoomShareModal onClose={() => setShowShareModal(open => !open)} /> : null}
         </div>
     );
