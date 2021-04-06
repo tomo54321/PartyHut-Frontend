@@ -1,4 +1,5 @@
 import { Route } from "react-router"
+import { AuthRoute } from "./components/AuthRoute";
 import { PageWrapper } from "./components/PageWrapper"
 import { AllPlaylistsPage } from "./pages/AllPlaylists";
 import { ForgotPasswordPage } from "./pages/ForgotPassword";
@@ -17,11 +18,11 @@ export const App: React.FC<AppProps> = () => {
     return (
         <PageWrapper>
             <Route path="/" exact component={HutsPage} />
-            <Route path="/settings" exact component={SettingsPage} />
-            <Route path="/music" exact component={MusicPage} />
-            <Route path="/playlists" exact component={AllPlaylistsPage} />
-            <Route path="/playlist/:playlistId" exact component={SinglePlaylistPage} />
-            <Route path="/room/:roomId" exact component={Room} />
+            <AuthRoute path="/settings" exact component={SettingsPage} />
+            <AuthRoute path="/music" exact component={MusicPage} />
+            <AuthRoute path="/playlists" exact component={AllPlaylistsPage} />
+            <AuthRoute path="/playlist/:playlistId" exact component={SinglePlaylistPage} />
+            <AuthRoute path="/room/:roomId" exact component={Room} />
 
             <Route path="/login" exact component={LoginPage} />
             <Route path="/signup" exact component={SignUpPage} />

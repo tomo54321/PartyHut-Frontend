@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({
         <img 
             src={image} 
             alt={title} 
-            className="rounded-t-md w-full"
+            className="rounded-t-md w-full h-full object-cover"
         />
         <div className="bg-gray-800 p-3 rounded-b-md">
             <span className="block font-medium text-lg truncate">{title}</span>

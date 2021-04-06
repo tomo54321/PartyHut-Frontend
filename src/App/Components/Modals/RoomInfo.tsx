@@ -1,14 +1,17 @@
 import dayjs from "dayjs";
+import { RoomState } from "../../redux/reducers/RoomReducer";
 import { DangerButton } from "../Button";
 import { Modal } from "../Modal";
 
 interface RoomInfoModalProps {
     onClose: Function;
+    room: RoomState;
     isOwner: boolean;
     onDelete: Function;
 }
 export const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
     onClose,
+    room,
     isOwner,
     onDelete
 }) => (
@@ -16,11 +19,11 @@ export const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
         onClose={onClose}
         title="About">
         <div className="space-y-3 ">
-            <span className="block font-bold text-xl truncate">The Hut</span>
+            <span className="block font-bold text-xl truncate">{room.room!.name}</span>
             <div className="grid grid-cols-2 gap-5 mt-3">
                 <div>
                     <span className="block text-sm opacity-75">Owned By</span>
-                    <span className="block truncate font-medium">tomo54321</span>
+                    <span className="block truncate font-medium">{room.room!.owner.username}</span>
                 </div>
                 <div>
                     <span className="block text-sm truncate opacity-75">Created</span>
@@ -28,7 +31,7 @@ export const RoomInfoModal: React.FC<RoomInfoModalProps> = ({
                 </div>
                 <div>
                     <span className="block text-sm truncate opacity-75">Followers</span>
-                    <span className="block font-medium">123,232</span>
+                    <span className="block font-medium">0</span>
                 </div>
                 {
                     isOwner ?

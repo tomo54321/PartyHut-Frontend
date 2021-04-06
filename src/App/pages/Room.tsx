@@ -23,6 +23,7 @@ export const Room: React.FC<RoomProps> = () => {
     const [showShareModal, setShowShareModal] = useState(false);
 
     const currentRoom = useSelector((state: ApplicationState) => state.room);
+    const currentUser = useSelector((state: ApplicationState) => state.user.user!);
     const match = useRouteMatch();
 
     useEffect(() => {
@@ -45,7 +46,7 @@ export const Room: React.FC<RoomProps> = () => {
     return (
         <div className="relative h-full w-full">
             <RoomHeader
-                name="The Hut"
+                name={currentRoom.room!.name}
                 onShowInfoPressed={() => setShowRoomInfoModal(true)}
                 onSharePressed={() => setShowShareModal(true)}
             />
@@ -91,7 +92,8 @@ export const Room: React.FC<RoomProps> = () => {
 
             {showRoomInfoModal ?
                 <RoomInfoModal
-                    isOwner
+                    isOwner={currentRoom.room!.owner.id === currentUser.id}
+                    room={currentRoom}
                     onDelete={() => {
                         setShowRoomDeleteModal(true);
                         setShowRoomInfoModal(false);

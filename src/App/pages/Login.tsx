@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { PartyHut } from "../api/api";
 import { AuthBox } from "../components/AuthBox";
 import { PrimaryButton } from "../components/Button";
@@ -23,6 +23,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
     const [errors, setErrors] = useState([] as Error[]);
 
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const onLogin = useCallback(async () => {
         setLoading(true);
@@ -35,6 +36,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
                 logged_in: true,
                 user
             }));
+            history.push("/");
 
         } catch (e: unknown) {
             const error = e as PartyHutAPI.ErrorResponse;
@@ -42,7 +44,7 @@ export const LoginPage: React.FC<LoginPageProps> = () => {
             setLoading(false);
         }
 
-    }, [dispatch, email, password]);
+    }, [dispatch, history, email, password]);
 
     useEffect(() => {
         if((window as any).sign_up_success){

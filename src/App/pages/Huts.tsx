@@ -19,7 +19,7 @@ export const HutsPage: React.FC<HutsPageProps> = () => {
     const [showCreateHutModal, setShowCreateHutModal] = useState(false);
 
     const [category, setCategory] = useState("discover" as "discover" | "trending" | "new" | "genres" | "search");
-    const query = useRef("");
+    const [query, setQuery] = useState("");
 
     const [isLoading, setIsLoading] = useState(true);
     const [rooms, setRooms] = useState([] as RoomResponse[]);
@@ -28,7 +28,7 @@ export const HutsPage: React.FC<HutsPageProps> = () => {
     useEffect(() => {
         setIsLoading(true);
         cancelToken.current = axios.CancelToken.source();
-        PartyHut.rooms.get(category, cancelToken.current.token, query.current)
+        PartyHut.rooms.get(category, cancelToken.current.token, query)
             .then(data => {
                 setRooms(data);
                 setIsLoading(false);
@@ -39,7 +39,7 @@ export const HutsPage: React.FC<HutsPageProps> = () => {
                 setIsLoading(false);
             })
 
-    }, [category]);
+    }, [category, query]);
 
     useEffect(() => {
         return () => {
@@ -60,7 +60,7 @@ export const HutsPage: React.FC<HutsPageProps> = () => {
                 <SearchInput
                     className="order-first mb-5 md:order-1 md:mb-0"
                     onSearch={(q: string) => {
-                        query.current = q;
+                        setQuery(q);
                         setCategory("search");
                     }}
                     loading={isLoading}
@@ -75,10 +75,10 @@ export const HutsPage: React.FC<HutsPageProps> = () => {
                         rooms.map((room, index) => (
                             <Card
                                 key={`room-${index}-${room.id}`}
-                                image={"http://placehold.it/1080x720"}
+                                image={room.song.artwork || "http://placehold.it/1080x720"}
                                 title={room.name}
                                 link={`/room/${room.id}`}
-                                subtitle={"Welcome!"}
+                                subtitle={room.playing ? ("Playing " + room.song.title!) : room.genres.length > 0 ? ("Genres: " + room.genres.join(", ")) : "Click to join!"}
                             />
                         ))
                         : 
