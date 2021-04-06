@@ -3,6 +3,7 @@ import * as auth from './endpoints/auth';
 import * as rooms from './endpoints/room';
 import * as playlist from './endpoints/playlist';
 import * as external from './endpoints/external';
+import * as account from './endpoints/account';
 
 export const api = axios.create({
     baseURL: "http://local.partyhut.net:4000",
@@ -20,5 +21,6 @@ export const PartyHut = {
     auth,
     rooms,
     playlist,
-    external
+    external,
+    account,
 };
