@@ -5,7 +5,7 @@ import * as playlist from './endpoints/playlist';
 import * as external from './endpoints/external';
 
 export const api = axios.create({
-    baseURL: "http://192.168.68.134:4000",
+    baseURL: "http://local.partyhut.net:4000",
     withCredentials: true
 });
 

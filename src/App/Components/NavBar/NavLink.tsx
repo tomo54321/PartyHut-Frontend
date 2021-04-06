@@ -19,7 +19,7 @@ export const NavLink: React.FC<NavLinkProps> = ({
     activeClassName={`bg-gray-700`}
     {...props}>
         <Icon size={20} className="hidden md:block opacity-50"/>
-        <span>{title}</span>
+        <span className="block truncate">{title}</span>
     </NavBarLink>
 );
 

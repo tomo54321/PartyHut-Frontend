@@ -6,7 +6,7 @@ import { ChatMessage } from '../types/ChatMessage';
 import { FullRoomResponse } from "../types/socketapi/FullRoomResponse";
 import { RoomDeckChange } from '../types/socketapi/RoomDeckChange';
 import { RoomUser } from '../types/socketapi/RoomUser';
-export const socketAPI = io("192.168.68.134:4001", {
+export const socketAPI = io("local.partyhut.net:4001", {
     autoConnect: false,
     reconnectionAttempts: 3,
     path: "/",
